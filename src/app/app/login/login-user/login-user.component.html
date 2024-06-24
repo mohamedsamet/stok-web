@@ -17,10 +17,11 @@
       <ng-template pTemplate="footer">
         <div class="d-flex justify-content-end">
           <p-button [raised]="true"
-                    label="Submit"
+                    label="Entrer"
                     icon="pi pi-check"
                     class="btn-primary w-full"
                     [loading]="loading"
+                    [disabled]="loginUserFormGroup.invalid"
                     (onClick)="onSubmit()"/>
         </div>
       </ng-template>

@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {CardModule} from "primeng/card";
 import {InputTextModule} from "primeng/inputtext";
-import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ButtonModule} from "primeng/button";
 import {ImageModule} from "primeng/image";
 import {LoginService} from "../login.service";
@@ -22,8 +22,8 @@ import {ERROR_LIFE, SeverityEnum, SUCCESS_LIFE} from "../../utils/message-notif.
 export class LoginUserComponent {
 
   public loginUserFormGroup = new FormGroup({
-    username: new FormControl(''),
-    password: new FormControl('')
+    username: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required)
   });
   loading = false;
 

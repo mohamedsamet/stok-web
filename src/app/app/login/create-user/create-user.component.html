@@ -12,15 +12,22 @@
             <label class="px-0" for="password">Mot de passe:</label>
             <input id="password" type="text" pInputText formControlName="password" />
           </div>
+          @if (showPwdAlert) {
+            <p class="position-absolute text-danger">
+              L'utilisateur ou le Mot de Passe est Invalid
+            </p>
+          }
+
         </form>
       </div>
       <ng-template pTemplate="footer">
         <div class="d-flex justify-content-end">
           <p-button [raised]="true"
-                    label="Submit"
+                    label="Créer"
                     icon="pi pi-check"
                     class="btn-primary w-full"
                     [loading]="loading"
+                    [disabled]="createUserFormGroup.invalid"
                     (onClick)="onSubmit()"/>
         </div>
       </ng-template>
