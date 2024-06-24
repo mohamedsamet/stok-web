@@ -15,14 +15,23 @@
         </form>
       </div>
       <ng-template pTemplate="footer">
-        <div class="d-flex justify-content-end">
+        <div class="d-grid d-sm-flex justify-content-sm-between">
+          <p-button [raised]="true"
+                    class="w-full d-inline-grid d-sm-flex"
+                    icon="pi pi-plus"
+                    label="Créer"
+                    severity="secondary"
+                    routerLink="/login/create" />
+
           <p-button [raised]="true"
                     label="Entrer"
-                    icon="pi pi-check"
-                    class="btn-primary w-full"
+                    icon="pi pi-check "
+                    class="btn-primary w-full d-inline-grid mt-3 mt-sm-0 d-sm-flex"
                     [loading]="loading"
                     [disabled]="loginUserFormGroup.invalid"
                     (onClick)="onSubmit()"/>
+
+
         </div>
       </ng-template>
     </p-card>

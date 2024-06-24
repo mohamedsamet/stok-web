@@ -21,11 +21,11 @@
         </form>
       </div>
       <ng-template pTemplate="footer">
-        <div class="d-flex justify-content-end">
+        <div class="d-grid d-sm-flex justify-content-sm-end">
           <p-button [raised]="true"
                     label="Créer"
                     icon="pi pi-check"
-                    class="btn-primary w-full"
+                    class="btn-primary w-full d-inline-grid d-sm-flex"
                     [loading]="loading"
                     [disabled]="createUserFormGroup.invalid"
                     (onClick)="onSubmit()"/>
