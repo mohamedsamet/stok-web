@@ -10,7 +10,7 @@ import {TokenResponseModel} from "../model/token-response.model";
 import {ToastModule} from "primeng/toast";
 import {MessageService} from "primeng/api";
 import {ERROR_LIFE, SeverityEnum, SUCCESS_LIFE} from "../../utils/message-notif.util";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-create-user',
@@ -28,12 +28,11 @@ export class LoginUserComponent {
   });
   loading = false;
 
-  constructor(private loginService: LoginService, private messageService: MessageService) {
+  constructor(private loginService: LoginService, private messageService: MessageService, private router: Router) {
   }
 
   onSubmit() {
     this.loading = true;
-
     this.loginService.loginUser({
       login: this.loginUserFormGroup.get('username')?.value,
       password: this.loginUserFormGroup.get('password')?.value,
@@ -46,10 +45,10 @@ export class LoginUserComponent {
         detail: `Bienvenue, Ton accèes est effectuer dans Stok`,
         key: 't1',
         life: SUCCESS_LIFE})
-
+      this.router.navigate(['/']);
       }, err => {
         this.loading = false;
-        console.log(err)
+        console.error(err);
         this.loginUserFormGroup.reset();
 
        this.messageService.add({severity: SeverityEnum.ERROR,

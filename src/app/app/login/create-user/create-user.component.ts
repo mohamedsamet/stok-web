@@ -9,11 +9,12 @@ import {LoginRequest} from "../model/login-request.model";
 import {ERROR_LIFE, SeverityEnum, SUCCESS_LIFE} from "../../utils/message-notif.util";
 import {MessageService} from "primeng/api";
 import {ToastModule} from "primeng/toast";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-create-user',
   standalone: true,
-  imports: [CardModule, ToastModule, InputTextModule, ReactiveFormsModule, ButtonModule, ImageModule],
+  imports: [CardModule, ToastModule, InputTextModule, ReactiveFormsModule, ButtonModule, RouterLink, ImageModule],
   providers: [MessageService],
   templateUrl: './create-user.component.html',
   styleUrl: './create-user.component.scss'
@@ -55,21 +56,19 @@ export class CreateUserComponent {
           key: 't2',
           life: SUCCESS_LIFE})
       }, err => {
-        console.log(err)
+        console.error(err);
         this.loading = false;
         this.messageService.add({severity: SeverityEnum.ERROR,
           summary: 'Notification',
           detail: `Une Erreur est Survenue Lors de la Création d'un Nouveau Utilisateur` ,
           key: 't2',
-          life: ERROR_LIFE})
+          life: ERROR_LIFE});
         this.createUserFormGroup.reset();
 
       })
     } else {
       this.showPwdAlert = true;
     }
-
-
   }
 
   private checkPassword(): boolean {

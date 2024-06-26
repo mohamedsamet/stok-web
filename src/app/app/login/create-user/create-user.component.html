@@ -5,12 +5,12 @@
         <form [formGroup]="createUserFormGroup">
           <div class="d-block px-0 mx-0 row">
             <label class="px-0" for="username">Nom Utilisateur:</label>
-            <input id="username" type="text" pInputText formControlName="username" />
+            <input (keydown.enter)="!createUserFormGroup.invalid && onSubmit()" id="username" type="text" pInputText formControlName="username" />
           </div>
 
           <div class="d-block px-0 mx-0 mt-5 row">
             <label class="px-0" for="password">Mot de passe:</label>
-            <input id="password" type="text" pInputText formControlName="password" />
+            <input (keydown.enter)="!createUserFormGroup.invalid && onSubmit()" id="password" type="text" pInputText formControlName="password" />
           </div>
           @if (showPwdAlert) {
             <p class="position-absolute text-danger">
@@ -21,11 +21,18 @@
         </form>
       </div>
       <ng-template pTemplate="footer">
-        <div class="d-grid d-sm-flex justify-content-sm-end">
+        <div class="d-grid d-sm-flex justify-content-sm-between">
+          <p-button [raised]="true"
+                    class="w-full d-inline-grid d-sm-flex"
+                    icon="pi pi-angle-left"
+                    label="Retour"
+                    severity="secondary"
+                    routerLink="/login" />
+
           <p-button [raised]="true"
                     label="Créer"
                     icon="pi pi-check"
-                    class="btn-primary w-full d-inline-grid d-sm-flex"
+                    class="btn-primary w-full d-inline-grid mt-3 mt-sm-0 d-sm-flex"
                     [loading]="loading"
                     [disabled]="createUserFormGroup.invalid"
                     (onClick)="onSubmit()"/>

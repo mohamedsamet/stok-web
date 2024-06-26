@@ -5,12 +5,20 @@
         <form [formGroup]="loginUserFormGroup">
           <div class="d-block px-0 mx-0 row">
             <label class="px-0" for="username">Nom Utilisateur:</label>
-            <input id="username" type="text" pInputText formControlName="username" />
+            <input (keydown.enter)="!loginUserFormGroup.invalid && onSubmit()"
+                   id="username"
+                   type="text"
+                   pInputText
+                   formControlName="username" />
           </div>
 
           <div class="d-block px-0 mx-0 mt-5 row">
             <label class="px-0" for="password">Mot de passe:</label>
-            <input id="password" type="text" pInputText formControlName="password" />
+            <input (keydown.enter)="!loginUserFormGroup.invalid && onSubmit()"
+                   id="password"
+                   type="text"
+                   pInputText
+                   formControlName="password" />
           </div>
         </form>
       </div>
