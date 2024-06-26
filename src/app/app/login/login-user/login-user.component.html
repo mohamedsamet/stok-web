@@ -6,6 +6,8 @@
           <div class="d-block px-0 mx-0 row">
             <label class="px-0" for="username">Nom Utilisateur:</label>
             <input (keydown.enter)="!loginUserFormGroup.invalid && onSubmit()"
+                   pAutoFocus
+                   [autofocus]="true"
                    id="username"
                    type="text"
                    pInputText

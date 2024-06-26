@@ -11,11 +11,12 @@ import {ToastModule} from "primeng/toast";
 import {MessageService} from "primeng/api";
 import {ERROR_LIFE, SeverityEnum, SUCCESS_LIFE} from "../../utils/message-notif.util";
 import {Router, RouterLink} from "@angular/router";
+import {AutoFocusModule} from "primeng/autofocus";
 
 @Component({
   selector: 'app-create-user',
   standalone: true,
-  imports: [CardModule, ToastModule, InputTextModule, ReactiveFormsModule, ButtonModule, ImageModule, RouterLink],
+  imports: [CardModule, ToastModule, InputTextModule, ReactiveFormsModule, ButtonModule, ImageModule, AutoFocusModule, RouterLink],
   providers: [MessageService],
   templateUrl: './login-user.component.html',
   styleUrl: './login-user.component.scss'

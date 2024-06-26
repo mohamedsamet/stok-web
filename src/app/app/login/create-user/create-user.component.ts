@@ -10,11 +10,12 @@ import {ERROR_LIFE, SeverityEnum, SUCCESS_LIFE} from "../../utils/message-notif.
 import {MessageService} from "primeng/api";
 import {ToastModule} from "primeng/toast";
 import {RouterLink} from "@angular/router";
+import {AutoFocusModule} from "primeng/autofocus";
 
 @Component({
   selector: 'app-create-user',
   standalone: true,
-  imports: [CardModule, ToastModule, InputTextModule, ReactiveFormsModule, ButtonModule, RouterLink, ImageModule],
+  imports: [CardModule, ToastModule, InputTextModule, ReactiveFormsModule, ButtonModule, RouterLink, ImageModule, AutoFocusModule],
   providers: [MessageService],
   templateUrl: './create-user.component.html',
   styleUrl: './create-user.component.scss'
