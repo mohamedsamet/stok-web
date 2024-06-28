@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {BASE_URL, LOGIN, USER} from "../utils/url.constants";
-import {HOST} from "../../../environments/environment";
+import {HOST} from "../../environments/environment";
 import {Observable} from "rxjs";
 import {LoginRequest} from "./model/login-request.model";
 import {LoginResponseModel} from "./model/login-response.model";

@@ -43,10 +43,10 @@ export class LoginUserComponent {
       this.loginUserFormGroup.reset();
       this.messageService.add({severity: SeverityEnum.INFO,
         summary: 'Notification',
-        detail: `Bienvenue, Ton accèes est effectuer dans Stok`,
+        detail: `Bienvenue, dans Stok`,
         key: 't1',
         life: SUCCESS_LIFE})
-      this.router.navigate(['/']);
+      this.router.navigate(['../']);
       }, err => {
         this.loading = false;
         console.error(err);
