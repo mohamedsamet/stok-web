@@ -1,1 +1,12 @@
-<p>home works!</p>
+<p-menubar [model]="menuItems" >
+  <ng-template pTemplate="start">
+    <p-image alt="image" src="logo.svg" />
+  </ng-template>
+
+  <ng-template pTemplate="end">
+    <div class="flex align-items-center gap-2">
+      <input type="text" pInputText placeholder="Recherche" class="w-6rem me-3" />
+      <p-avatar (click)="disconnect()" icon="pi pi-sign-out" size="large" shape="circle"></p-avatar>
+    </div>
+  </ng-template>
+</p-menubar>

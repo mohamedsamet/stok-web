@@ -45,7 +45,7 @@ export class LoginUserComponent {
         summary: 'Notification',
         detail: `Bienvenue, dans Stok`,
         key: 't1',
-        life: SUCCESS_LIFE})
+        life: SUCCESS_LIFE});
       this.router.navigate(['../']);
       }, err => {
         this.loading = false;
@@ -56,8 +56,7 @@ export class LoginUserComponent {
          summary: 'Erreur',
          detail: `Une erreur est survenue au moment du login`,
          key: 't1',
-         life: ERROR_LIFE})
-
+         life: ERROR_LIFE});
     })
   }
 }
