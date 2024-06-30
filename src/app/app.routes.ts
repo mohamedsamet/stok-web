@@ -3,6 +3,7 @@ import {CreateUserComponent} from "./login/create-user/create-user.component";
 import {LoginUserComponent} from "./login/login-user/login-user.component";
 import {HomeComponent} from "./home/home.component";
 import {TokenValidGuard} from "./route-guard/token-valid.guard";
+import {ProductComponent} from "./product/product.component";
 
 export const routes: Routes = [
   {
@@ -16,6 +17,17 @@ export const routes: Routes = [
   {
     path: "",
     component: HomeComponent,
-    canActivate: [TokenValidGuard]
+    canActivate: [TokenValidGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: 'product',
+        pathMatch: 'full'
+      },
+      {
+        path: "product",
+        component: ProductComponent
+      }
+    ]
   }
 ];
