@@ -7,3 +7,27 @@
     width: 350px;
   }
 }
+
+.bars-btn {
+  background: transparent;
+  color: black;
+  border: none;
+  top: 2px;
+  &:hover {
+    background: transparent;
+
+  }
+}
+
+.sideBar-element {
+  height: 40px;
+  text-align: start;
+  padding: 0 15px;
+  line-height: 40px;
+  font-size: large;
+
+  &:hover {
+    background: lightgray;
+    cursor: pointer;
+  }
+}

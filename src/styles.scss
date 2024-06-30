@@ -14,3 +14,8 @@ button {
 
 p-avatar {cursor: pointer}
 
+.p-menubar .p-menubar-root-list > .p-menuitem:not(.p-highlight):not(.p-disabled) > .p-menuitem-content {
+  &:hover {
+    background: transparent;
+  }
+}

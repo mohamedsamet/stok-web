@@ -1,7 +1,11 @@
 <p-menubar [model]="menuItems" >
   <ng-template pTemplate="start">
-    <p-image class="d-sm-block d-none" alt="image" src="stok.png" width="180px" />
+    <p-image class="d-sm-block d-none" alt="image" src="stok.png" width="160px" />
     <p-image class="d-block d-sm-none" alt="image" src="stok-mobile.png" width="45px" />
+  </ng-template>
+  <ng-template pTemplate="menuItem" let-menuItem>
+      <button pButton (click)="sidebarVisible = true"
+              class="mt-2 bars-btn position-relative" icon="pi pi-bars" ></button>
   </ng-template>
 
   <ng-template pTemplate="end">
@@ -10,4 +14,23 @@
       <p-avatar (click)="disconnect()" icon="pi pi-sign-out" size="large" shape="circle"></p-avatar>
     </div>
   </ng-template>
+
+
+
 </p-menubar>
+
+<p-sidebar [(visible)]="sidebarVisible" styleClass="w-5rem">
+  <ng-template pTemplate="headless">
+    <div class="d-flex justify-content-between p-2">
+      <p-image class="d-block" alt="image" src="stok-mobile.png" width="45px" />
+
+      <p-button [text]="true" severity="secondary" size="large" icon="pi pi-times-circle" (click)="sidebarVisible = false"></p-button>
+    </div>
+
+    <div>
+      <div class="sideBar-element">Product</div>
+    </div>
+
+  </ng-template>
+
+</p-sidebar>
