@@ -1,1 +1,34 @@
-<p>product works!</p>
+<div class="d-flex justify-content-center">
+  <p-selectButton
+    [options]="types"
+    [ngModel]="selectedType"
+    (ngModelChange)="selectType($event)"
+    [styleClass]="'select-btn'"
+    class="my-2"
+    optionLabel="label"
+    optionValue="key" />
+</div>
+  <div class="d-block mx-2">
+    <p-table [alwaysShowPaginator]="true"
+             [rows]="10"
+             [paginator]="true"
+             [value]="products">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Nom</th>
+          <th>Quantité</th>
+          <th>Type</th>
+          <th>Fournisseur</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>{{ product.name }}</td>
+          <td>{{ product.quantity }}</td>
+          <td>{{ product.type }}</td>
+          <td>{{ product.provider }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+

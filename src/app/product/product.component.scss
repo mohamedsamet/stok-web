@@ -1,0 +1,15 @@
+::ng-deep {
+  .select-btn .p-button {
+    border:1px solid lightgray;
+    color: dimgrey;
+    font-size: 12px;
+    outline: none;
+
+
+    &.p-highlight {
+      background: lightgray;
+    }
+
+
+  }
+}

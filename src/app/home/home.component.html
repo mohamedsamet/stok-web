@@ -1,11 +1,12 @@
-<p-menubar [model]="menuItems" >
+<p-menubar [model]="menuItems" autoHide="true" styleClass="menu-bar">
   <ng-template pTemplate="start">
-    <p-image class="d-sm-block d-none" alt="image" src="stok.png" width="160px" />
-    <p-image class="d-block d-sm-none" alt="image" src="stok-mobile.png" width="45px" />
-  </ng-template>
-  <ng-template pTemplate="menuItem" let-menuItem>
+    <div class="d-flex">
+      <p-image class="d-sm-block d-none" alt="image" src="stok.png" width="160px" />
+      <p-image class="d-block d-sm-none" alt="image" src="stok-mobile.png" width="45px" />
       <button pButton (click)="sidebarVisible = true"
-              class="mt-2 bars-btn position-relative" icon="pi pi-bars" ></button>
+              size="large"
+              class="bars-btn position-relative" icon="pi pi-bars" ></button>
+    </div>
   </ng-template>
 
   <ng-template pTemplate="end">
@@ -25,7 +26,7 @@
     </div>
 
     <div>
-      <div class="sideBar-element">Product</div>
+      <a class="d-block sideBar-element" [routerLink]="['product']" (click)="sidebarVisible = false">Product</a>
     </div>
 
   </ng-template>
