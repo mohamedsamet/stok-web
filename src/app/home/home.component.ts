@@ -1,27 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {MenubarModule} from "primeng/menubar";
-import {MenuItem} from "primeng/api";
-import {ImageModule} from "primeng/image";
-import {AvatarModule} from "primeng/avatar";
-import {InputTextModule} from "primeng/inputtext";
-import {IconFieldModule} from "primeng/iconfield";
-import {MenuModule} from "primeng/menu";
-import {DropdownModule} from "primeng/dropdown";
 import {Router, RouterModule} from "@angular/router";
-import {SidebarModule} from "primeng/sidebar";
-import {ButtonModule} from "primeng/button";
-
 @Component({
   selector: 'app-home',
-  imports: [MenubarModule, ImageModule, AvatarModule, InputTextModule, MenuModule, SidebarModule, ButtonModule, RouterModule],
+  imports: [RouterModule],
   standalone: true,
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
 
-  menuItems: MenuItem[] = [
-  ];
+  menuItems = [];
 
   sidebarVisible = false;
   constructor(private router: Router) {

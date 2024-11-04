@@ -1,54 +1,34 @@
 <div class="container mt-4 mt-lg-5 mt-xxl-5 d-flex justify-content-center pt-lg-5">
-  <div>
-    <p-card class="col-12 col-lg-6 col-xxl-5" header="Se Connecter à Stok">
-      <div class="mt-2 mt-xxl-5">
-        <form [formGroup]="loginUserFormGroup">
-          <div class="d-block px-0 mx-0 row">
-            <label class="px-0" for="username">Nom Utilisateur:</label>
-            <input (keydown.enter)="!loginUserFormGroup.invalid && onSubmit()"
-                   pAutoFocus
-                   [autofocus]="true"
-                   id="username"
-                   type="text"
-                   pInputText
-                   formControlName="username" />
-          </div>
-
-          <div class="d-block px-0 mx-0 mt-5 row">
-            <label class="px-0" for="password">Mot de passe:</label>
-            <input (keydown.enter)="!loginUserFormGroup.invalid && onSubmit()"
-                   id="password"
-                   type="text"
-                   pInputText
-                   formControlName="password" />
-          </div>
-        </form>
-      </div>
-      <ng-template pTemplate="footer">
-        <div class="d-grid d-sm-flex justify-content-sm-between">
-          <p-button [raised]="true"
-                    class="w-full d-inline-grid d-sm-flex"
-                    icon="pi pi-plus"
-                    label="Créer"
-                    severity="secondary"
-                    routerLink="/login/create" />
-
-          <p-button [raised]="true"
-                    label="Entrer"
-                    icon="pi pi-check "
-                    class="btn-primary w-full d-inline-grid mt-3 mt-sm-0 d-sm-flex"
-                    [loading]="loading"
-                    [disabled]="loginUserFormGroup.invalid"
-                    (onClick)="onSubmit()"/>
-
-
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Accéder à Stok</h5>
+      <form [formGroup]="loginUserFormGroup">
+        <div class="d-block px-0 mx-0 row">
+          <label class="px-0" for="username">Nom Utilisateur:</label>
+          <input (keydown.enter)="!loginUserFormGroup.invalid && onSubmit()"
+                 [autofocus]="true"
+                 id="username"
+                 type="text"
+                 class="form-control"
+                 formControlName="username" />
         </div>
-      </ng-template>
-    </p-card>
+
+        <div class="d-block px-0 mx-0 mt-5 row">
+          <label class="px-0" for="password">Mot de passe:</label>
+          <input (keydown.enter)="!loginUserFormGroup.invalid && onSubmit()"
+                 id="password"
+                 type="password"
+                 class="form-control"
+                 formControlName="password" />
+        </div>
+      </form>
+      <div class="d-grid d-sm-flex justify-content-sm-end mt-2">
+        <button label="Entrer"
+                class="btn-primary w-full d-inline-grid btn btn-success d-sm-flex"
+                [disabled]="loginUserFormGroup.invalid"
+                (click)="onSubmit()">Entrer</button>
+      </div>
+    </div>
   </div>
 </div>
-<div class="d-flex justify-content-center mt-3 mt-lg-5">
-  <p-image alt="image" src="logo.svg" />
-</div>
-<p-toast position="top-right" key="t1" />
 

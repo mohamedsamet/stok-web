@@ -1,9 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "primeng/resources/themes/lara-light-blue/theme.css";
-@import "primeng/resources/primeng.css";
 @import "../node_modules/bootstrap/scss/bootstrap";
-@import "primeicons/primeicons.css";
 
 button {
   border-radius: 6px;
@@ -12,10 +9,3 @@ button {
   line-height: normal;
 }
 
-p-avatar {cursor: pointer}
-
-.p-menubar .p-menubar-root-list > .p-menuitem:not(.p-highlight):not(.p-disabled) > .p-menuitem-content {
-  &:hover {
-    background: transparent;
-  }
-}
