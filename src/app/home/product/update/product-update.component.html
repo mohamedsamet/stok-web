@@ -1,15 +1,16 @@
 
 <button type="button"
-        class="btn btn-success btn-sm"
+        class="btn btn-success btn-sm d-none"
+        #btnUpdateModal
         data-bs-toggle="modal"
-        data-bs-target="#staticBackdrop">Créer un produit
+        data-bs-target="#updateModal">Modifier un produit
 </button>
 
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="updateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Créer un produit</h1>
+        <h1 class="modal-title fs-5" id="updateModalLabel">Modifier un produit</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -17,10 +18,6 @@
           <div class="mb-3">
             <label for="name" class="form-label">Nom de produit</label>
             <input type="text" class="form-control" id="name" formControlName="name">
-          </div>
-          <div class="mb-3">
-            <label for="quantity" class="form-label">Quantité initiale</label>
-            <input type="number" class="form-control" id="quantity" formControlName="initialValue">
           </div>
           <div>
             <label for="product-unit" class="form-label">Unité de produit</label>

@@ -4,6 +4,7 @@ export interface ProductModel {
   name: string;
   quantity: number;
   unit: string;
+  type: ProductType;
 }
 
 export interface ProductRequest {
@@ -11,7 +12,8 @@ export interface ProductRequest {
   name: string;
   initialValue: number;
   unit: ProductUnit;
-  type: ProductType
+  type: ProductType;
+  publicId?: string;
 }
 
 export enum ProductType {

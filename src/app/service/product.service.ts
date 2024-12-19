@@ -19,4 +19,8 @@ export class ProductService {
   createProduct(product: ProductRequest): Observable<ProductModel> {
     return this.http.post<ProductModel>(`${HOST}${BASE_URL}${CREATE_PRODUCT}`, product)
   }
+
+  updateProduct(product: ProductRequest): Observable<ProductModel> {
+    return this.http.put<ProductModel>(`${HOST}${BASE_URL}${CREATE_PRODUCT}`, product)
+  }
 }

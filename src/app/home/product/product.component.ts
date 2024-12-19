@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {RouterModule} from "@angular/router";
-import {Observable} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import {ProductModel, ProductRequest, ProductType} from "./product.model";
 import {CommonModule} from "@angular/common";
 import {ProductService} from "../../service/product.service";
@@ -8,10 +8,11 @@ import {catchError, switchMap, tap} from "rxjs/operators";
 import {FormsModule} from "@angular/forms";
 import {ProductCreateComponent} from "./creation/product-create.component";
 import {ToastService} from "../../shared/toast/toast.service";
+import {ProductUpdateComponent} from "./update/product-update.component";
 
 @Component({
   selector: 'app-product',
-  imports: [RouterModule, CommonModule, FormsModule, ProductCreateComponent],
+  imports: [RouterModule, CommonModule, FormsModule, ProductCreateComponent, ProductUpdateComponent],
   standalone: true,
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss']
@@ -26,10 +27,11 @@ export class ProductComponent implements OnInit {
   productCount: number = 0;
   typeEnum = ProductType;
 
+  selectedProduct: ProductModel = {} as ProductModel;
+
   ngOnInit(): void {
     this.findProducts();
   }
-
 
   private findProducts(): Observable<ProductModel[]> {
     return this.productService.findProducts(this.type).pipe(
@@ -58,6 +60,25 @@ export class ProductComponent implements OnInit {
         })
       )
       .subscribe()
+  }
 
+  updateProduct(productForm: ProductRequest) {
+    productForm.publicId = this.selectedProduct.publicId;
+    this.productService.updateProduct(productForm)
+      .pipe(
+        tap((response: ProductModel) => {
+          this.toastService.showSucess(`Produit <${response.name}> modifié avec succées`)
+        }),
+        switchMap((response: ProductModel) => {
+          this.products = this.findProducts();
+          this.selectedProduct = {} as ProductModel;
+          return this.products;
+        }),
+        catchError(() => {
+          this.toastService.showSucess('Problème survenu lors de la modification du produit');
+          return new Observable();
+        })
+      )
+      .subscribe()
   }
 }
