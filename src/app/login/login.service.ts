@@ -6,7 +6,7 @@ import {Observable} from "rxjs";
 import {LoginRequest} from "./model/login-request.model";
 import {LoginResponseModel} from "./model/login-response.model";
 import {TokenResponseModel} from "./model/token-response.model";
-import {filter, tap} from "rxjs/operators";
+import {catchError, filter, tap} from "rxjs/operators";
 import {Router} from "@angular/router";
 
 @Injectable({
@@ -30,11 +30,17 @@ export class LoginService {
       this.http.post<boolean>(`${HOST}${BASE_URL}${CHECK}`, token)
         .pipe(
           filter(isValid => !isValid),
-          tap(() => {
-            localStorage.removeItem('Authorization');
-            this.router.navigate(["login"])
+          tap(() => this.cleanStorage()),
+          catchError(() => {
+            this.cleanStorage();
+            return new Observable();
           })
         ).subscribe();
     }
+  }
+
+  private cleanStorage() {
+    localStorage.removeItem('Authorization');
+    this.router.navigate(["login"]);
   }
 }

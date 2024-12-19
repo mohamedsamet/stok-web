@@ -1,18 +1,18 @@
-  <ng-template pTemplate="start">
-    <div class="d-flex">
-      <img class="d-sm-block d-none" alt="image" src="stok.png" width="160px" />
-      <img class="d-block d-sm-none" alt="image" src="stok-mobile.png" width="45px" />
-      <button (click)="sidebarVisible = true"
-              size="large"
-              class="bars-btn position-relative" icon="pi pi-bars" ></button>
-    </div>
-  </ng-template>
-
-  <ng-template pTemplate="end">
-    <div class="flex align-items-center">
-      <input type="text"  placeholder="Recherche" class="me-1 me-sm-3 input-search" />
-      <i (click)="disconnect()" ></i>
-    </div>
-  </ng-template>
+<nav class="navbar bg-body-tertiary sticky-top border-bottom border-body">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="stok.png" alt="Logo" height="24" class="d-inline-block align-text-top">
+    </a>
+      <ul class="nav nav-underline flex-row me-auto my-2 my-lg-0">
+        <li class="nav-item me-3">
+          <a class="nav-link text-black" aria-current="page" routerLink="product" routerLinkActive="active">Produits</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-black" aria-current="page" routerLink="transformation" routerLinkActive="active">Transformation</a>
+        </li>
+      </ul>
+    <button class="btn btn-sm btn-outline-dark" type="submit" (click)="disconnect()">Déconnecter</button>
+  </div>
+</nav>
 
 <router-outlet></router-outlet>

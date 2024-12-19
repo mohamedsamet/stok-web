@@ -9,9 +9,6 @@ import {Router, RouterModule} from "@angular/router";
 })
 export class HomeComponent implements OnInit {
 
-  menuItems = [];
-
-  sidebarVisible = false;
   constructor(private router: Router) {
   }
 
