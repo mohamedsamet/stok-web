@@ -6,5 +6,6 @@ export const PRODUCT_TYPE: string = '/type';
 export const TYPES: string = '/types';
 export const LOGIN: string = '/auth/login';
 export const PRODUCTS: string = '/product/search/type/';
+export const CREATE_PRODUCT: string = '/product';
 export const CHECK: string = '/auth/check';
 
