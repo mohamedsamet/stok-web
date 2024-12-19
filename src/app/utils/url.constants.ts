@@ -5,4 +5,5 @@ export const PRODUCT_SEARCH: string = '/product/search';
 export const PRODUCT_TYPE: string = '/type';
 export const TYPES: string = '/types';
 export const LOGIN: string = '/auth/login';
+export const CHECK: string = '/auth/check';
 

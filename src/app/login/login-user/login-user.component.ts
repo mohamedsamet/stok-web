@@ -3,8 +3,8 @@ import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {LoginService} from "../login.service";
 import {LoginRequest} from "../model/login-request.model";
 import {TokenResponseModel} from "../model/token-response.model";
-import {ERROR_LIFE, SeverityEnum, SUCCESS_LIFE} from "../../utils/message-notif.util";
 import {Router, RouterLink} from "@angular/router";
+import {ToastService} from "../../shared/toast/toast.service";
 
 @Component({
   selector: 'app-create-user',
@@ -21,7 +21,7 @@ export class LoginUserComponent {
   });
   loading = false;
 
-  constructor(private loginService: LoginService,  private router: Router) {
+  constructor(private loginService: LoginService,  private router: Router, private toastService: ToastService) {
   }
 
   onSubmit() {
@@ -33,22 +33,13 @@ export class LoginUserComponent {
       localStorage.setItem('Authorization', response.accessToken)
       this.loading = false;
       this.loginUserFormGroup.reset();
-//       this.messageService.add({severity: SeverityEnum.INFO,
-//         summary: 'Notification',
-//         detail: `Bienvenue, dans Stok`,
-//         key: 't1',
-//         life: SUCCESS_LIFE});
+      this.toastService.showSucess("Vous avez accéder à l'application");
       this.router.navigate(['../']);
       }, err => {
         this.loading = false;
         console.error(err);
-        this.loginUserFormGroup.reset();
-
-//        this.messageService.add({severity: SeverityEnum.ERROR,
-//          summary: 'Erreur',
-//          detail: `Une erreur est survenue au moment du login`,
-//          key: 't1',
-//          life: ERROR_LIFE});
+      this.toastService.showFail("Vous n'etes pas autorisé à accéder");
+      this.loginUserFormGroup.reset();
     })
   }
 }
