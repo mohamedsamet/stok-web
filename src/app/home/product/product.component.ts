@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {RouterModule} from "@angular/router";
-import {Observable, Subject} from "rxjs";
+import {Observable} from "rxjs";
 import {ProductModel, ProductRequest, ProductType} from "./product.model";
 import {CommonModule} from "@angular/common";
 import {ProductService} from "../../service/product.service";
-import {catchError, switchMap, take, tap} from "rxjs/operators";
+import {catchError, tap} from "rxjs/operators";
 import {FormsModule} from "@angular/forms";
 import {ProductCreateComponent} from "./creation/product-create.component";
 import {ToastService} from "../../shared/toast/toast.service";
@@ -32,6 +32,7 @@ export class ProductComponent implements OnInit {
   selectedProduct: ProductModel = {} as ProductModel;
   selectedQuantityProduct: ProductModel = {} as ProductModel;
   productToRemove: ProductModel = {} as ProductModel;
+  searchProduct: string = "";
 
   ngOnInit(): void {
     this.findProducts();
