@@ -7,5 +7,7 @@ export const TYPES: string = '/types';
 export const LOGIN: string = '/auth/login';
 export const PRODUCT_SEARCH_BY_TYPE: string = '/product/search/type/';
 export const PRODUCT: string = '/product';
+export const ADD: string = '/add/';
+export const SUBTRACT: string = '/subtract/';
 export const CHECK: string = '/auth/check';
 

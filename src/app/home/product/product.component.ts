@@ -4,16 +4,17 @@ import {Observable, Subject} from "rxjs";
 import {ProductModel, ProductRequest, ProductType} from "./product.model";
 import {CommonModule} from "@angular/common";
 import {ProductService} from "../../service/product.service";
-import {catchError, switchMap, tap} from "rxjs/operators";
+import {catchError, switchMap, take, tap} from "rxjs/operators";
 import {FormsModule} from "@angular/forms";
 import {ProductCreateComponent} from "./creation/product-create.component";
 import {ToastService} from "../../shared/toast/toast.service";
 import {ProductUpdateComponent} from "./update/product-update.component";
 import {ProductRemoveComponent} from "./remove/product-remove.component";
+import {ProductQuantityComponent} from "./quantity/product-quantity.component";
 
 @Component({
   selector: 'app-product',
-  imports: [RouterModule, CommonModule, FormsModule, ProductCreateComponent, ProductUpdateComponent, ProductRemoveComponent],
+  imports: [RouterModule, CommonModule, FormsModule, ProductQuantityComponent, ProductCreateComponent, ProductUpdateComponent, ProductRemoveComponent],
   standalone: true,
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss']
@@ -27,8 +28,9 @@ export class ProductComponent implements OnInit {
   products: Observable<ProductModel[]> = this.findProducts();
   productCount: number = 0;
   typeEnum = ProductType;
-
+  quantityMode = '';
   selectedProduct: ProductModel = {} as ProductModel;
+  selectedQuantityProduct: ProductModel = {} as ProductModel;
   productToRemove: ProductModel = {} as ProductModel;
 
   ngOnInit(): void {
@@ -36,6 +38,7 @@ export class ProductComponent implements OnInit {
   }
 
   private findProducts(): Observable<ProductModel[]> {
+    console.log("finfinfinf")
     return this.productService.findProducts(this.type).pipe(
       tap((products: ProductModel[]) => this.productCount = products.length)
     )
@@ -102,5 +105,53 @@ export class ProductComponent implements OnInit {
         })
       )
       .subscribe()
+  }
+
+  addQuantity(quantity: number) {
+    this.productService.addQuantity(this.selectedQuantityProduct.publicId, quantity)
+      .pipe(
+        tap((response: ProductModel) => {
+          this.toastService.showSucess(`Quantité de produit modifié avec succès`)
+        }),
+        take(1),
+        switchMap(() => {
+          this.products = this.findProducts();
+          this.selectedQuantityProduct = {} as ProductModel;
+          return this.products;
+        }),
+        catchError((errror) => {
+          console.log(errror)
+          this.toastService.showFail('Problème survenu lors de la modification de la qunatité de produit');
+          return new Observable();
+        })
+      )
+      .subscribe()
+  }
+
+  subtractQuantity(quantity: number) {
+    this.productService.subtractQuantity(this.selectedQuantityProduct.publicId, quantity)
+      .pipe(
+        tap((response: ProductModel) => {
+          this.toastService.showSucess(`Quantité de produit modifié avec succès`)
+        }),
+        switchMap(() => {
+          this.products = this.findProducts();
+          this.selectedQuantityProduct = {} as ProductModel;
+          return this.products;
+        }),
+        catchError((errror) => {
+          console.log(errror)
+          this.toastService.showFail('Problème survenu lors de la modification de la qunatité de produit');
+          return new Observable();
+        })
+      )
+      .subscribe()
+
+  }
+
+  openModalChangeQuantity(item: ProductModel, sign: string) {
+    this.selectedQuantityProduct = item;
+    this.quantityMode = sign;
+
   }
 }
