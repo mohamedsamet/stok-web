@@ -2,8 +2,8 @@ import {Component, OnInit, Output, EventEmitter, Input} from "@angular/core";
 import {RouterModule} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {ProductModel, ProductRequest, ProductType, ProductUnit} from "../product.model";
-import {Subject} from "rxjs";
+import {ProductRequest, ProductType, ProductUnit} from "../product.model";
+
 
 @Component({
   selector: 'app-product-create',

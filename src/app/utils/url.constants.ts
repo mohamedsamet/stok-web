@@ -5,7 +5,7 @@ export const PRODUCT_SEARCH: string = '/product/search';
 export const PRODUCT_TYPE: string = '/type';
 export const TYPES: string = '/types';
 export const LOGIN: string = '/auth/login';
-export const PRODUCTS: string = '/product/search/type/';
-export const CREATE_PRODUCT: string = '/product';
+export const PRODUCT_SEARCH_BY_TYPE: string = '/product/search/type/';
+export const PRODUCT: string = '/product';
 export const CHECK: string = '/auth/check';
 

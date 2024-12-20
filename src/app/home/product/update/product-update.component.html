@@ -42,7 +42,9 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fermer</button>
-        <button type="button" class="btn btn-sm btn-success" data-bs-dismiss="modal" (click)="submit()" [disabled]="formGroup.invalid">Enregistrer</button>
+        <button type="button" class="btn btn-sm btn-success" data-bs-dismiss="modal" (click)="submit()" [disabled]="formGroup.invalid">
+          <i class="bi bi-floppy2 pe-2"></i>
+          Enregistrer</button>
       </div>
     </div>
   </div>

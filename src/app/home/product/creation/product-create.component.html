@@ -2,7 +2,9 @@
 <button type="button"
         class="btn btn-success btn-sm"
         data-bs-toggle="modal"
-        data-bs-target="#staticBackdrop">Créer un produit
+        data-bs-target="#staticBackdrop">
+  <i class="bi bi-plus-circle-fill pe-2"></i>
+  Créer un produit
 </button>
 
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -44,8 +46,11 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fermer</button>
-        <button type="button" class="btn btn-sm btn-success" data-bs-dismiss="modal" (click)="submit()" [disabled]="formGroup.invalid">Enregistrer</button>
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
+          Fermer</button>
+        <button type="button" class="btn btn-sm btn-success" data-bs-dismiss="modal" (click)="submit()" [disabled]="formGroup.invalid">
+          <i class="bi bi-floppy2 pe-2"></i>
+          Enregistrer</button>
       </div>
     </div>
   </div>
