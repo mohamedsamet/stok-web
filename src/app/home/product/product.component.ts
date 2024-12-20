@@ -38,7 +38,7 @@ export class ProductComponent implements OnInit {
   }
 
   private findProducts(): Observable<ProductModel[]> {
-    console.log("finfinfinf")
+
     return this.productService.findProducts(this.type).pipe(
       tap((products: ProductModel[]) => this.productCount = products.length)
     )
@@ -54,10 +54,7 @@ export class ProductComponent implements OnInit {
       .pipe(
         tap((response: ProductModel) => {
           this.toastService.showSucess(`Produit <${response.name}> créé avec succées`)
-        }),
-        switchMap((response: ProductModel) => {
           this.products = this.findProducts();
-          return this.products;
         }),
         catchError(() => {
           this.toastService.showSucess('Problème survenu lors de la création du produit');
@@ -72,12 +69,9 @@ export class ProductComponent implements OnInit {
     this.productService.updateProduct(productForm)
       .pipe(
         tap((response: ProductModel) => {
-          this.toastService.showSucess(`Produit <${response.name}> modifié avec succées`)
-        }),
-        switchMap((response: ProductModel) => {
+          this.toastService.showSucess(`Produit <${response.name}> modifié avec succées`);
           this.products = this.findProducts();
           this.selectedProduct = {} as ProductModel;
-          return this.products;
         }),
         catchError(() => {
           this.toastService.showFail('Problème survenu lors de la modification du produit');
@@ -91,12 +85,9 @@ export class ProductComponent implements OnInit {
     this.productService.removeProduct(this.productToRemove.publicId)
       .pipe(
         tap((response: ProductModel) => {
-          this.toastService.showSucess(`Produit <${this.productToRemove.name}> supprimé avec succées`)
-        }),
-        switchMap(() => {
+          this.toastService.showSucess(`Produit <${this.productToRemove.name}> supprimé avec succées`);
           this.products = this.findProducts();
           this.productToRemove = {} as ProductModel;
-          return this.products;
         }),
         catchError((errror) => {
           console.log(errror)
@@ -111,13 +102,9 @@ export class ProductComponent implements OnInit {
     this.productService.addQuantity(this.selectedQuantityProduct.publicId, quantity)
       .pipe(
         tap((response: ProductModel) => {
-          this.toastService.showSucess(`Quantité de produit modifié avec succès`)
-        }),
-        take(1),
-        switchMap(() => {
+          this.toastService.showSucess(`Quantité de produit modifié avec succès`);
           this.products = this.findProducts();
           this.selectedQuantityProduct = {} as ProductModel;
-          return this.products;
         }),
         catchError((errror) => {
           console.log(errror)
@@ -132,12 +119,9 @@ export class ProductComponent implements OnInit {
     this.productService.subtractQuantity(this.selectedQuantityProduct.publicId, quantity)
       .pipe(
         tap((response: ProductModel) => {
-          this.toastService.showSucess(`Quantité de produit modifié avec succès`)
-        }),
-        switchMap(() => {
+          this.toastService.showSucess(`Quantité de produit modifié avec succès`);
           this.products = this.findProducts();
           this.selectedQuantityProduct = {} as ProductModel;
-          return this.products;
         }),
         catchError((errror) => {
           console.log(errror)
@@ -146,7 +130,6 @@ export class ProductComponent implements OnInit {
         })
       )
       .subscribe()
-
   }
 
   openModalChangeQuantity(item: ProductModel, sign: string) {
