@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {HOST} from "../../environments/environment";
-import {BASE_URL, PRODUCT, STATION} from "../utils/url.constants";
+import {BASE_URL, CLOSE, PRODUCT, STATION} from "../utils/url.constants";
 import {StationModel, StationRequest} from "../home/station/station.model";
 
 @Injectable({
@@ -22,6 +22,10 @@ export class StationService {
 
   updateStation(station: StationRequest): Observable<StationModel> {
     return this.http.put<StationModel>(`${HOST}${BASE_URL}${STATION}/${station.publicId}`, station)
+  }
+
+  finalizeStation(station: StationModel): Observable<StationModel> {
+    return this.http.put<StationModel>(`${HOST}${BASE_URL}${STATION}${CLOSE}/${station.publicId}`, {});
   }
 
 }

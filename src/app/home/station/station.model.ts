@@ -11,7 +11,6 @@ export interface StationModel {
   transformations: TransformationModel[];
 }
 
-
 export interface StationRequest {
   provider: string;
   name: string;
