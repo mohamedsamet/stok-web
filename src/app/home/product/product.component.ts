@@ -9,12 +9,13 @@ import {FormsModule} from "@angular/forms";
 import {ProductCreateComponent} from "./creation/product-create.component";
 import {ToastService} from "../../shared/toast/toast.service";
 import {ProductUpdateComponent} from "./update/product-update.component";
-import {ProductRemoveComponent} from "./remove/product-remove.component";
+import {RemoveComponent} from "../shared/remove/remove.component";
 import {ProductQuantityComponent} from "./quantity/product-quantity.component";
+import {RemoveModel} from "../shared/remove/remove.model";
 
 @Component({
   selector: 'app-product',
-  imports: [RouterModule, CommonModule, FormsModule, ProductQuantityComponent, ProductCreateComponent, ProductUpdateComponent, ProductRemoveComponent],
+  imports: [RouterModule, CommonModule, FormsModule, ProductQuantityComponent, ProductCreateComponent, ProductUpdateComponent, RemoveComponent],
   standalone: true,
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss']
@@ -32,7 +33,7 @@ export class ProductComponent implements OnInit {
   selectedProduct: ProductModel = {} as ProductModel;
   selectedQuantityProduct: ProductModel = {} as ProductModel;
   productToRemove: ProductModel = {} as ProductModel;
-  searchProduct: string = "";
+  removeContext: RemoveModel = {} as RemoveModel;
 
   ngOnInit(): void {
     this.findProducts();
@@ -137,5 +138,14 @@ export class ProductComponent implements OnInit {
     this.selectedQuantityProduct = item;
     this.quantityMode = sign;
 
+  }
+
+  removeProduct(item: ProductModel) {
+    this.productToRemove = item;
+    this.removeContext = {
+      title: "Supprimer un produit",
+      content: `Etes vous sure de vouloir supprimer le produit ${item.name} `,
+      id: item.publicId
+    }
   }
 }
