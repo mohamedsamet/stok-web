@@ -14,12 +14,10 @@ import {Subject} from "rxjs";
 export class ProductUpdateComponent implements OnInit {
   typeEnum = ProductType;
   unitEnum = ProductUnit;
+  productPublicId: string = "";
   @ViewChild("btnUpdateModal") btn: ElementRef<HTMLButtonElement> | undefined;
   @Output() submitUpdate = new EventEmitter<ProductRequest>()
 
-  @Input() set product(product: ProductModel) {
-    this.openUpdateModal(product)
-  }
   formGroup: FormGroup = new FormGroup<any>({});
   constructor(private fb: FormBuilder) {
   }
@@ -34,12 +32,15 @@ export class ProductUpdateComponent implements OnInit {
   }
 
   submit() {
-    this.submitUpdate.emit(this.formGroup.value);
+    const request: ProductRequest = this.formGroup.value as ProductRequest;
+    request.publicId = this.productPublicId;
+    this.submitUpdate.emit(request);
     this.formGroup.reset();
   }
 
-  private openUpdateModal(product: ProductModel) {
+  public openUpdateModal(product: ProductModel) {
     if (product.publicId) {
+      this.productPublicId = product.publicId;
       this.formGroup.patchValue({
         name: product.name,
         provider: product.provider,

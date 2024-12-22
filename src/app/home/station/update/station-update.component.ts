@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, EventEmitter, Input, ViewChild, ElementRef} from "@angular/core";
+import {Component, OnInit, Output, EventEmitter, ViewChild, ElementRef} from "@angular/core";
 import {RouterModule} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -14,11 +14,8 @@ export class StationUpdateComponent implements OnInit {
 
   @ViewChild("btnUpdateStationModal") btn: ElementRef<HTMLButtonElement> | undefined;
   @Output() submitUpdate = new EventEmitter<StationRequest>()
-  @Output() dismiss = new EventEmitter()
 
-  @Input() set station(station: StationModel) {
-    this.openUpdateModal(station)
-  }
+  stationPublicId: string = "";
   formGroup: FormGroup = new FormGroup<any>({});
   constructor(private fb: FormBuilder) {
   }
@@ -34,12 +31,15 @@ export class StationUpdateComponent implements OnInit {
   }
 
   submit() {
-    this.submitUpdate.emit(this.formGroup.value);
+    const stationRequest: StationRequest = this.formGroup.value;
+    stationRequest.publicId = this.stationPublicId;
+    this.submitUpdate.emit(stationRequest);
     this.formGroup.reset();
   }
 
-  private openUpdateModal(station: StationModel) {
+  public openUpdateModal(station: StationModel) {
     if (station.publicId) {
+      this.stationPublicId = station.publicId;
       this.formGroup.patchValue({
         name: station.name,
         machine: station.machine,

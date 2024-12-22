@@ -16,23 +16,23 @@
       </thead>
       <tbody *ngIf="stationCount > 0">
         <tr *ngFor="let item of stationData">
-          <td *ngIf="!item.closed" class="text-decoration-underline" style="cursor:pointer" (click)="selectedStation = item">{{item.name}}</td>
+          <td *ngIf="!item.closed" class="text-decoration-underline" style="cursor:pointer" (click)="stationUpdate?.openUpdateModal(item)">{{item.name}}</td>
           <td *ngIf="item.closed">{{item.name}}</td>
           <td>{{item.operator}}</td>
           <td>{{item.date}}</td>
           <td>{{item.duration}}</td>
           <td>{{item.machine}}</td>
           <td>
-            <i *ngIf="!item.closed" (click)="addTransformations(item)" class="bi bi-pencil-square h4"></i>
+            <i *ngIf="!item.closed" (click)="transformationComponent?.openTransformationModal(item)" class="bi bi-pencil-square h4"></i>
             <i *ngIf="item.closed" class="bi bi-bag-check-fill h4"></i>
-            <i *ngIf="!item.closed" (click)="clotureStation = item" class="bi bi-database-check h4 ms-2"></i>
+            <i *ngIf="!item.closed" (click)="finalizeComponent?.openModal(item)" class="bi bi-database-check h4 ms-2"></i>
           </td>
         </tr>
       </tbody>
     </table>
-    <app-finalize (dismiss)="dismissFinalize()" [name]="clotureStation.name" (valid)="finalize()"></app-finalize>
-    <app-transformation [products]="products" [stationTransform]="transformStation" (dismiss)="initTransform()" (reload)="reload()"></app-transformation>
-    <app-station-update (dismiss)="dismissUpdate()" [station]="selectedStation" (submitUpdate)="updateStation($event)"></app-station-update>
+    <app-finalize (valid)="finalize($event)"></app-finalize>
+    <app-transformation [products]="products" (reload)="reload()"></app-transformation>
+    <app-station-update (submitUpdate)="updateStation($event)"></app-station-update>
     <h6 class="d-flex mt-5 justify-content-center" *ngIf="stationCount === 0">Aucune station trouvée</h6>
   </div>
 </div>

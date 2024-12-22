@@ -2,7 +2,7 @@ import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} f
 import {RouterModule} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
-import {StationModel, StationRequest} from "../station.model";
+import {StationModel} from "../station.model";
 import {Observable} from "rxjs";
 import {ProductSelectorComponent} from "./product-selector/product-selector.component";
 import {ProductModel, SelectProductModel} from "../../product/product.model";
@@ -22,15 +22,11 @@ export class TransformationComponent {
 
   @ViewChild("btnTransformationModal") btn: ElementRef<HTMLButtonElement> | undefined;
   @Output() reload = new EventEmitter();
-  @Output() dismiss = new EventEmitter();
+  @Input() products = new Observable<ProductModel[]>();
+
   transformations: TransformationModel[] = [];
   transformEnum = TransFormationEnum;
   station: StationModel = {} as StationModel;
-  @Input() set stationTransform(station: StationModel) {
-    this.openTransformationModal(station)
-  }
-
-  @Input() products = new Observable<ProductModel[]>();
 
   constructor(private transformSerivce: TransformationService, private toast: ToastService) {
   }
@@ -51,7 +47,7 @@ export class TransformationComponent {
       .subscribe()
   }
 
-  private openTransformationModal(station: StationModel) {
+  public openTransformationModal(station: StationModel) {
     if (station.publicId) {
       this.station = station;
       this.transformations = station.transformations;

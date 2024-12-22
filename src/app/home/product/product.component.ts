@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {RouterModule} from "@angular/router";
 import {Observable} from "rxjs";
-import {ProductModel, ProductRequest, ProductType} from "./product.model";
+import {ProductModel, ProductQuantityModel, ProductRequest, ProductType} from "./product.model";
 import {CommonModule} from "@angular/common";
 import {ProductService} from "../../service/product.service";
 import {catchError, tap} from "rxjs/operators";
@@ -11,7 +11,6 @@ import {ToastService} from "../../shared/toast/toast.service";
 import {ProductUpdateComponent} from "./update/product-update.component";
 import {RemoveComponent} from "../shared/remove/remove.component";
 import {ProductQuantityComponent} from "./quantity/product-quantity.component";
-import {RemoveModel} from "../shared/remove/remove.model";
 
 @Component({
   selector: 'app-product',
@@ -30,10 +29,10 @@ export class ProductComponent {
   productCount: number = 0;
   typeEnum = ProductType;
   quantityMode = '';
-  selectedProduct: ProductModel = {} as ProductModel;
-  selectedQuantityProduct: ProductModel = {} as ProductModel;
-  productToRemove: ProductModel = {} as ProductModel;
-  removeContext: RemoveModel = {} as RemoveModel;
+
+  @ViewChild(ProductQuantityComponent) productQuantity?: ProductQuantityComponent;
+  @ViewChild(ProductUpdateComponent) productUpdate?: ProductUpdateComponent;
+  @ViewChild(RemoveComponent) removeComponent?: RemoveComponent;
 
   private findProducts(): Observable<ProductModel[]> {
 
@@ -63,13 +62,11 @@ export class ProductComponent {
   }
 
   updateProduct(productForm: ProductRequest) {
-    productForm.publicId = this.selectedProduct.publicId;
     this.productService.updateProduct(productForm)
       .pipe(
         tap((response: ProductModel) => {
           this.toastService.showSucess(`Produit <${response.name}> modifié avec succées`);
           this.products = this.findProducts();
-          this.selectedProduct = {} as ProductModel;
         }),
         catchError(() => {
           this.toastService.showFail('Problème survenu lors de la modification du produit');
@@ -79,13 +76,12 @@ export class ProductComponent {
       .subscribe()
   }
 
-  deleteProduct() {
-    this.productService.removeProduct(this.productToRemove.publicId)
+  deleteProduct(product: ProductRequest) {
+    this.productService.removeProduct(product.publicId)
       .pipe(
         tap((response: ProductModel) => {
-          this.toastService.showSucess(`Produit <${this.productToRemove.name}> supprimé avec succées`);
+          this.toastService.showSucess(`Produit <${product?.name}> supprimé avec succées`);
           this.products = this.findProducts();
-          this.productToRemove = {} as ProductModel;
         }),
         catchError((errror) => {
           console.log(errror)
@@ -96,13 +92,12 @@ export class ProductComponent {
       .subscribe()
   }
 
-  addQuantity(quantity: number) {
-    this.productService.addQuantity(this.selectedQuantityProduct.publicId, quantity)
+  addQuantity(productQuantity: ProductQuantityModel) {
+    this.productService.addQuantity(productQuantity.publicId, productQuantity.quantity)
       .pipe(
         tap((response: ProductModel) => {
-          this.toastService.showSucess(`Quantité de produit modifié avec succès`);
+          this.toastService.showSucess(`Quantité de produit modifiée avec succès`);
           this.products = this.findProducts();
-          this.selectedQuantityProduct = {} as ProductModel;
         }),
         catchError((errror) => {
           console.log(errror)
@@ -113,13 +108,12 @@ export class ProductComponent {
       .subscribe()
   }
 
-  subtractQuantity(quantity: number) {
-    this.productService.subtractQuantity(this.selectedQuantityProduct.publicId, quantity)
+  subtractQuantity(productQuantity: ProductQuantityModel) {
+    this.productService.subtractQuantity(productQuantity.publicId, productQuantity.quantity)
       .pipe(
         tap((response: ProductModel) => {
           this.toastService.showSucess(`Quantité de produit modifié avec succès`);
           this.products = this.findProducts();
-          this.selectedQuantityProduct = {} as ProductModel;
         }),
         catchError((errror) => {
           console.log(errror)
@@ -131,21 +125,7 @@ export class ProductComponent {
   }
 
   openModalChangeQuantity(item: ProductModel, sign: string) {
-    this.selectedQuantityProduct = item;
     this.quantityMode = sign;
-
-  }
-
-  removeProduct(item: ProductModel) {
-    this.productToRemove = item;
-    this.removeContext = {
-      title: "Supprimer un produit",
-      content: `Etes vous sure de vouloir supprimer le produit ${item.name} `,
-      id: item.publicId
-    }
-  }
-
-  resetQuantityProduct() {
-    this.selectedQuantityProduct = {} as ProductModel;
+    this.productQuantity?.openQuantityModal(item);
   }
 }

@@ -24,8 +24,8 @@ export class StationService {
     return this.http.put<StationModel>(`${HOST}${BASE_URL}${STATION}/${station.publicId}`, station)
   }
 
-  finalizeStation(station: StationModel): Observable<StationModel> {
-    return this.http.put<StationModel>(`${HOST}${BASE_URL}${STATION}${CLOSE}/${station.publicId}`, {});
+  finalizeStation(stationPublicId: string): Observable<StationModel> {
+    return this.http.put<StationModel>(`${HOST}${BASE_URL}${STATION}${CLOSE}/${stationPublicId}`, {});
   }
 
 }

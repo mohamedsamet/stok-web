@@ -12,19 +12,13 @@ import {RemoveModel} from "./remove.model";
 })
 export class RemoveComponent {
 
-  title: String = "";
-  content: String = "";
-  id: string = "";
+  item?: any;
   @ViewChild("btnDeleteModal") btnDelete: ElementRef<HTMLButtonElement> | undefined;
-  @Input() set context(context: RemoveModel) {
-   this.openRemoveModal(context);
-  }
-  @Output() validDelete = new EventEmitter<boolean>();
 
-  private openRemoveModal(context: RemoveModel) {
-    this.title = context.title;
-    this.content = context.content;
-    this.id = context.id;
+  @Output() validDelete = new EventEmitter<any>();
+
+  public openRemoveModal(item: any) {
+    this.item = item;
     this.btnDelete?.nativeElement?.click();
   }
 }

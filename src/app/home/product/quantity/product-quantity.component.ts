@@ -1,9 +1,8 @@
-import {Component, OnInit, Output, EventEmitter, Input, ViewChild, ElementRef} from "@angular/core";
+import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from "@angular/core";
 import {RouterModule} from "@angular/router";
 import {CommonModule} from "@angular/common";
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {ProductModel, ProductRequest, ProductType, ProductUnit} from "../product.model";
-import {Subject} from "rxjs";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {ProductModel, ProductQuantityModel} from "../product.model";
 
 @Component({
   selector: 'app-product-quantity',
@@ -13,29 +12,31 @@ import {Subject} from "rxjs";
 })
 export class ProductQuantityComponent {
   quantity: number = 0;
+  productPublicId: string = "";
   @ViewChild("btnQuantityModal") btn: ElementRef<HTMLButtonElement> | undefined;
-  @Output() addQuantity = new EventEmitter<number>()
-  @Output() subtractQuantity = new EventEmitter<number>()
-  @Output() dismiss = new EventEmitter()
+  @Output() addQuantity = new EventEmitter<ProductQuantityModel>();
+  @Output() subtractQuantity = new EventEmitter<ProductQuantityModel>();
   @Input() mode: string = '';
-  @Input() set product(product: ProductModel) {
-    this.openQuantityModal(product)
-  }
 
   submit() {
+    const productQuantityRequest: ProductQuantityModel = {
+      quantity: this.quantity,
+      publicId: this.productPublicId
+    } as ProductQuantityModel;
+
     if (this.mode === '+') {
-      this.addQuantity.emit(this.quantity);
+      this.addQuantity.emit(productQuantityRequest);
     }
 
     if (this.mode === '-') {
-      this.subtractQuantity.emit(this.quantity);
+      this.subtractQuantity.emit(productQuantityRequest);
     }
 
   }
 
-  private openQuantityModal(product: ProductModel) {
+  public openQuantityModal(product: ProductModel) {
     if (product.publicId) {
-
+      this.productPublicId = product.publicId;
       this.btn?.nativeElement?.click();
     }
   }

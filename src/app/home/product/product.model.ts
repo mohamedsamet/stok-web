@@ -1,4 +1,3 @@
-import {TransformationModel} from "../station/transformation/transformation.model";
 
 export interface ProductModel {
   publicId: string;
@@ -9,13 +8,18 @@ export interface ProductModel {
   type: ProductType;
 }
 
+export interface ProductQuantityModel {
+  quantity: number;
+  publicId: string;
+}
+
 export interface ProductRequest {
   provider: string;
   name: string;
   initialValue: number;
   unit: ProductUnit;
   type: ProductType;
-  publicId?: string;
+  publicId: string;
 }
 
 export enum ProductType {

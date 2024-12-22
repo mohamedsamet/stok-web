@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {RouterModule} from "@angular/router";
 import {Observable} from "rxjs";
 import {StationModel, StationRequest} from "./station.model";
@@ -13,14 +13,12 @@ import {TransformationComponent} from "./transformation/transformation.component
 import {ProductModel} from "../product/product.model";
 import {ProductService} from "../../service/product.service";
 import {FinalizeComponent} from "./cloture/finalize.component";
-import {TransformationModel} from "./transformation/transformation.model";
 
 @Component({
   selector: 'app-station',
   imports: [RouterModule, CommonModule, FormsModule, StationCreateComponent, StationUpdateComponent, FinalizeComponent, TransformationComponent],
   standalone: true,
-  templateUrl: './station.component.html',
-  styleUrls: ['./station.component.scss']
+  templateUrl: './station.component.html'
 })
 export class StationComponent {
 
@@ -31,10 +29,10 @@ export class StationComponent {
 
   stations: Observable<StationModel[]> = this.findStations();
   stationCount: number = 0;
-  selectedStation: StationModel = {} as StationModel;
-  clotureStation: StationModel = {} as StationModel;
-  transformStation: StationModel = {} as StationModel;
   products: Observable<ProductModel[]> = this.findProducts();
+  @ViewChild(FinalizeComponent) finalizeComponent?: FinalizeComponent;
+  @ViewChild(TransformationComponent) transformationComponent?: TransformationComponent;
+  @ViewChild(StationUpdateComponent) stationUpdate?: StationUpdateComponent;
 
   private findProducts(): Observable<ProductModel[]> {
     return this.productService.findAllProducts();
@@ -62,38 +60,30 @@ export class StationComponent {
   }
 
   updateStation(stationForm: StationRequest) {
-    stationForm.publicId = this.selectedStation.publicId;
     this.stationService.updateStation(stationForm)
       .pipe(
         tap((response: StationModel) => {
-          this.toastService.showSucess(`Produit <${response.name}> modifié avec succées`);
+          this.toastService.showSucess(`Station <${response.name}> modifiée avec succées`);
           this.stations = this.findStations();
-          this.selectedStation = {} as StationModel;
         }),
         catchError(() => {
-          this.toastService.showFail('Problème survenu lors de la modification du produit');
+          this.toastService.showFail('Problème survenu lors de la modification de la station');
           return new Observable();
         })
       )
       .subscribe()
   }
 
-  addTransformations(item: StationModel) {
-    this.transformStation = item;
-  }
-
   reload() {
     this.stations = this.findStations();
-    this.transformStation = {} as StationModel;
   }
 
-  finalize() {
-    this.stationService.finalizeStation(this.clotureStation)
+  finalize(stationPublicId: string) {
+    this.stationService.finalizeStation(stationPublicId)
       .pipe(
         tap((response: StationModel) => {
-          this.toastService.showSucess(`La station <${response.name}> est cloturé avec succées`);
+          this.toastService.showSucess(`La station <${response.name}> est cloturée avec succées`);
           this.stations = this.findStations();
-          this.clotureStation = {} as StationModel;
         }),
         catchError(() => {
           this.toastService.showFail('Problème survenu lors de la cloture de la station');
@@ -101,17 +91,5 @@ export class StationComponent {
         })
       )
       .subscribe()
-  }
-
-  dismissUpdate() {
-    this.selectedStation = {} as StationModel;
-  }
-
-  initTransform() {
-    this.transformStation = {} as StationModel;
-  }
-
-  dismissFinalize() {
-    this.clotureStation = {} as StationModel;
   }
 }
