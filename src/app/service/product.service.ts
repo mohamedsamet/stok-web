@@ -3,7 +3,7 @@ import {Observable} from "rxjs";
 import {ProductModel, ProductRequest, ProductType} from "../home/product/product.model";
 import {HttpClient} from "@angular/common/http";
 import {HOST} from "../../environments/environment";
-import {BASE_URL, PRODUCT, LOGIN, PRODUCT_SEARCH_BY_TYPE, ADD, SUBTRACT} from "../utils/url.constants";
+import {BASE_URL, PRODUCT, LOGIN, PRODUCT_SEARCH_BY_TYPE, ADD, SUBTRACT, PRODUCT_SEARCH} from "../utils/url.constants";
 
 @Injectable({
   providedIn: 'root'
@@ -34,5 +34,9 @@ export class ProductService {
 
   subtractQuantity(publicId: string, quantity: number): Observable<ProductModel> {
     return this.http.post<ProductModel>(`${HOST}${BASE_URL}${PRODUCT}${SUBTRACT}${publicId}`, quantity);
+  }
+
+  findAllProducts(): Observable<ProductModel[]> {
+    return this.http.get<ProductModel[]>(`${HOST}${BASE_URL}${PRODUCT_SEARCH}`)
   }
 }

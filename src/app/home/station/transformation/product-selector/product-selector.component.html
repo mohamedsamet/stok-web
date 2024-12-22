@@ -1,0 +1,20 @@
+<div>
+  <div *ngFor="let transformation of transformations" class="d-flex mb-2 justify-content-around align-items-center align-content-center">
+    <i class="bi bi-dash-circle-fill h4 mb-0 me-1" (click)="removeTransformation.emit(transformation.publicId)"></i>
+    <div class="dropdown">
+      <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        {{(transformation.product?.name | ellipsis:12) || 'Choisir'}}
+      </button>
+      <ul class="dropdown-menu">
+        <li *ngFor="let product of productsData;"><a
+          (click)="selectProductTransform.emit({publicId: transformation?.publicId || '', product: product})"
+          style="cursor: pointer"
+          class="dropdown-item">{{product.name}}</a></li>
+      </ul>
+    </div>
+    <div class="input-group input-group-sm">
+      <input style="width: 80px" type="number" [(ngModel)]="transformation.quantity" class="form-control">
+    </div>
+  </div>
+</div>
+<i class="bi bi-plus-circle-fill h3" (click)="addTransformation.emit()"></i>

@@ -1,3 +1,5 @@
+import {TransformationModel} from "./transformation/transformation.model";
+
 export interface StationModel {
   publicId: string;
   name: string;
@@ -6,6 +8,7 @@ export interface StationModel {
   duration: number;
   machine: string;
   closed: boolean;
+  transformations: TransformationModel[];
 }
 
 

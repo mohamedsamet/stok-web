@@ -9,27 +9,31 @@ import {ToastService} from "../../shared/toast/toast.service";
 import {StationService} from "../../service/station.service";
 import {StationCreateComponent} from "./creation/station-create.component";
 import {StationUpdateComponent} from "./update/station-update.component";
-import {RemoveModel} from "../shared/remove/remove.model";
-import {RemoveComponent} from "../shared/remove/remove.component";
+import {TransformationComponent} from "./transformation/transformation.component";
+import {ProductModel} from "../product/product.model";
+import {ProductService} from "../../service/product.service";
 
 @Component({
   selector: 'app-station',
-  imports: [RouterModule, CommonModule, FormsModule, StationCreateComponent, StationUpdateComponent, RemoveComponent],
+  imports: [RouterModule, CommonModule, FormsModule, StationCreateComponent, StationUpdateComponent, TransformationComponent],
   standalone: true,
   templateUrl: './station.component.html',
   styleUrls: ['./station.component.scss']
 })
-export class StationComponent implements OnInit {
+export class StationComponent {
 
-  constructor(private stationService: StationService, private toastService: ToastService) {
+  constructor(private stationService: StationService, private toastService: ToastService, private productService: ProductService) {
   }
 
   stations: Observable<StationModel[]> = this.findStations();
   stationCount: number = 0;
   selectedStation: StationModel = {} as StationModel;
+  transformStation: StationModel = {} as StationModel;
+  products: Observable<ProductModel[]> = this.findProducts();
 
-  ngOnInit(): void {
-    this.findStations();
+  private findProducts(): Observable<ProductModel[]> {
+
+    return this.productService.findAllProducts();
   }
 
   private findStations(): Observable<StationModel[]> {
@@ -72,4 +76,12 @@ export class StationComponent implements OnInit {
       .subscribe()
   }
 
+  addTransformations(item: StationModel) {
+    this.transformStation = item;
+  }
+
+  reload() {
+    this.stations = this.findStations();
+    this.transformStation = {} as StationModel;
+  }
 }

@@ -24,8 +24,4 @@ export class StationService {
     return this.http.put<StationModel>(`${HOST}${BASE_URL}${STATION}/${station.publicId}`, station)
   }
 
-  removeStation(publicId: string): Observable<any> {
-    return this.http.delete(`${HOST}${BASE_URL}${STATION}/${publicId}`);
-  }
-
 }

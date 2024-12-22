@@ -20,7 +20,7 @@ import {RemoveModel} from "../shared/remove/remove.model";
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss']
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent {
 
   constructor(private productService: ProductService, private toastService: ToastService) {
   }
@@ -34,10 +34,6 @@ export class ProductComponent implements OnInit {
   selectedQuantityProduct: ProductModel = {} as ProductModel;
   productToRemove: ProductModel = {} as ProductModel;
   removeContext: RemoveModel = {} as RemoveModel;
-
-  ngOnInit(): void {
-    this.findProducts();
-  }
 
   private findProducts(): Observable<ProductModel[]> {
 

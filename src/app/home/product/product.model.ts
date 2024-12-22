@@ -1,3 +1,5 @@
+import {TransformationModel} from "../station/transformation/transformation.model";
+
 export interface ProductModel {
   publicId: string;
   provider: string;
@@ -24,4 +26,9 @@ export enum ProductType {
 export enum ProductUnit {
   KG = "KG",
   PIECE = "PIECE"
+}
+
+export interface SelectProductModel {
+  publicId: string;
+  product: ProductModel;
 }
