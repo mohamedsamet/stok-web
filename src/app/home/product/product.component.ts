@@ -144,4 +144,8 @@ export class ProductComponent {
       id: item.publicId
     }
   }
+
+  resetQuantityProduct() {
+    this.selectedQuantityProduct = {} as ProductModel;
+  }
 }

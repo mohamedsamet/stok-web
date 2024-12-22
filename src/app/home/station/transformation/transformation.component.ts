@@ -21,7 +21,8 @@ import {ToastService} from "../../../shared/toast/toast.service";
 export class TransformationComponent {
 
   @ViewChild("btnTransformationModal") btn: ElementRef<HTMLButtonElement> | undefined;
-  @Output() reload = new EventEmitter()
+  @Output() reload = new EventEmitter();
+  @Output() dismiss = new EventEmitter();
   transformations: TransformationModel[] = [];
   transformEnum = TransFormationEnum;
   station: StationModel = {} as StationModel;

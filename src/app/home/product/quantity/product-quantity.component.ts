@@ -16,6 +16,7 @@ export class ProductQuantityComponent {
   @ViewChild("btnQuantityModal") btn: ElementRef<HTMLButtonElement> | undefined;
   @Output() addQuantity = new EventEmitter<number>()
   @Output() subtractQuantity = new EventEmitter<number>()
+  @Output() dismiss = new EventEmitter()
   @Input() mode: string = '';
   @Input() set product(product: ProductModel) {
     this.openQuantityModal(product)

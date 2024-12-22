@@ -34,7 +34,10 @@
       </tr>
       </tbody>
     </table>
-    <app-product-quantity [mode]="quantityMode" [product]="selectedQuantityProduct" (addQuantity)="addQuantity($event)" (subtractQuantity)="subtractQuantity($event)"></app-product-quantity>
+    <app-product-quantity [mode]="quantityMode" [product]="selectedQuantityProduct"
+                          (dismiss)="resetQuantityProduct()"
+                          (addQuantity)="addQuantity($event)"
+                          (subtractQuantity)="subtractQuantity($event)"></app-product-quantity>
     <app-product-update [product]="selectedProduct" (submitUpdate)="updateProduct($event)"></app-product-update>
     <app-remove *ngIf="removeContext" [context]="removeContext" (validDelete)="deleteProduct()"></app-remove>
     <h6 class="d-flex mt-5 justify-content-center" *ngIf="productCount === 0">Aucun produit trouvé</h6>

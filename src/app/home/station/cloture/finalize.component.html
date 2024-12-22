@@ -11,14 +11,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="updateModalLabel">Cloture de la station {{stationName}}</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="dismiss.emit()" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         Etes vous sure de vouloir cloturer la stations {{stationName}}
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Non</button>
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" (click)="dismiss.emit()">Non</button>
         <button type="button" class="btn btn-sm btn-outline-success" data-bs-dismiss="modal" (click)="valid.emit(true)">
           <i class="bi bi-database-check pe-2"></i>
           Cloturer</button>

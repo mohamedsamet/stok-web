@@ -17,6 +17,7 @@ export class FinalizeComponent {
    this.openFinalizeModal(name);
   }
   @Output() valid = new EventEmitter<boolean>();
+  @Output() dismiss = new EventEmitter();
 
   private openFinalizeModal(context: string) {
     this.stationName = context;

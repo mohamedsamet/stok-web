@@ -14,6 +14,7 @@ export class StationUpdateComponent implements OnInit {
 
   @ViewChild("btnUpdateStationModal") btn: ElementRef<HTMLButtonElement> | undefined;
   @Output() submitUpdate = new EventEmitter<StationRequest>()
+  @Output() dismiss = new EventEmitter()
 
   @Input() set station(station: StationModel) {
     this.openUpdateModal(station)

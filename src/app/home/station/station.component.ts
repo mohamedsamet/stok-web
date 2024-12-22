@@ -13,6 +13,7 @@ import {TransformationComponent} from "./transformation/transformation.component
 import {ProductModel} from "../product/product.model";
 import {ProductService} from "../../service/product.service";
 import {FinalizeComponent} from "./cloture/finalize.component";
+import {TransformationModel} from "./transformation/transformation.model";
 
 @Component({
   selector: 'app-station',
@@ -100,5 +101,17 @@ export class StationComponent {
         })
       )
       .subscribe()
+  }
+
+  dismissUpdate() {
+    this.selectedStation = {} as StationModel;
+  }
+
+  initTransform() {
+    this.transformStation = {} as StationModel;
+  }
+
+  dismissFinalize() {
+    this.clotureStation = {} as StationModel;
   }
 }
