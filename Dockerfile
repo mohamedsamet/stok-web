@@ -21,4 +21,4 @@ COPY --from=build app/dist/stok-web/browser /usr/share/nginx/html
 EXPOSE 80
 
 #docker build -t stok-web .
-#docker run -d -p 8080:80 stok-web
+#docker run -d --restart unless stopped --name stok-web -p 8888:80 stok-web
