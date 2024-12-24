@@ -11,6 +11,7 @@ import {TransformTypePipe} from "../../shared/pipe/transform-type.pipe";
 import {TransformationService} from "../../../service/transformation.service";
 import {catchError, tap} from "rxjs/operators";
 import {ToastService} from "../../../shared/toast/toast.service";
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-transformation',
@@ -57,7 +58,7 @@ export class TransformationComponent {
 
   addTransformation(type: TransFormationEnum) {
     this.transformations = this.transformations.concat({
-      publicId: crypto.randomUUID(),
+      publicId: uuidv4(),
       type
     } as TransformationModel);
 
