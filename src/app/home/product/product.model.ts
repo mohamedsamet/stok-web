@@ -8,6 +8,11 @@ export interface ProductModel {
   type: ProductType;
 }
 
+export interface ProductResponse {
+  products: ProductModel[];
+  count: number;
+}
+
 export interface ProductQuantityModel {
   quantity: number;
   publicId: string;
@@ -35,4 +40,10 @@ export enum ProductUnit {
 export interface SelectProductModel {
   publicId: string;
   product: ProductModel;
+}
+
+export interface SearchProductModel {
+  name?: string;
+  types?: ProductType[];
+  page: number;
 }

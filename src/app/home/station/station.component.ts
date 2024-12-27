@@ -3,14 +3,14 @@ import {RouterModule} from "@angular/router";
 import {Observable} from "rxjs";
 import {StationModel, StationRequest} from "./station.model";
 import {CommonModule} from "@angular/common";
-import {catchError, tap} from "rxjs/operators";
+import {catchError, map, tap} from "rxjs/operators";
 import {FormsModule} from "@angular/forms";
 import {ToastService} from "../../shared/toast/toast.service";
 import {StationService} from "../../service/station.service";
 import {StationCreateComponent} from "./creation/station-create.component";
 import {StationUpdateComponent} from "./update/station-update.component";
 import {TransformationComponent} from "./transformation/transformation.component";
-import {ProductModel} from "../product/product.model";
+import {ProductModel, ProductResponse, ProductType, SearchProductModel} from "../product/product.model";
 import {ProductService} from "../../service/product.service";
 import {FinalizeComponent} from "./cloture/finalize.component";
 
@@ -35,7 +35,14 @@ export class StationComponent {
   @ViewChild(StationUpdateComponent) stationUpdate?: StationUpdateComponent;
 
   private findProducts(): Observable<ProductModel[]> {
-    return this.productService.findAllProducts();
+    const searchRequest: SearchProductModel = {
+      page: 0,
+      types: [ProductType.RAW, ProductType.FINAL]
+    } as SearchProductModel;
+    return this.productService.findAllProducts(searchRequest).pipe(
+      map((products: ProductResponse) => products.products),
+      tap(prod => console.log(prod))
+    );
   }
 
   private findStations(): Observable<StationModel[]> {

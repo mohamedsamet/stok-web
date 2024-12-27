@@ -1,5 +1,8 @@
 <div class="p-2 p-lg-4">
   <div class="d-flex justify-content-between align-items-center">
+    <div>
+      <input type="text" placeholder="Chercher" [(ngModel)]="search" (ngModelChange)="searchSubject.next($event)" class="form-control" id="searchProd">
+    </div>
     <div class="ms-auto btn-group" role="group" aria-label="Basic radio toggle button group">
       <input type="radio" [value]="typeEnum.RAW" [ngModel]="type" (ngModelChange)="change(typeEnum.RAW)" class="btn-sm btn-check" name="btnradio1" id="btnradio1" autocomplete="off">
       <label class="btn btn-sm btn-outline-dark" for="btnradio1">Matière première</label>

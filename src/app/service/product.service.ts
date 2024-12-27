@@ -1,6 +1,12 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
-import {ProductModel, ProductRequest, ProductType} from "../home/product/product.model";
+import {
+  ProductModel,
+  ProductRequest,
+  ProductResponse,
+  ProductType,
+  SearchProductModel
+} from "../home/product/product.model";
 import {HttpClient} from "@angular/common/http";
 import {HOST} from "../../environments/environment";
 import {BASE_URL, PRODUCT, LOGIN, PRODUCT_SEARCH_BY_TYPE, ADD, SUBTRACT, PRODUCT_SEARCH} from "../utils/url.constants";
@@ -11,10 +17,6 @@ import {BASE_URL, PRODUCT, LOGIN, PRODUCT_SEARCH_BY_TYPE, ADD, SUBTRACT, PRODUCT
 export class ProductService {
 
   constructor(private http: HttpClient) { }
-
-  findProducts(type: ProductType): Observable<ProductModel[]> {
-    return this.http.get<ProductModel[]>(`${HOST}${BASE_URL}${PRODUCT_SEARCH_BY_TYPE}${type}`)
-  }
 
   createProduct(product: ProductRequest): Observable<ProductModel> {
     return this.http.post<ProductModel>(`${HOST}${BASE_URL}${PRODUCT}`, product)
@@ -36,7 +38,7 @@ export class ProductService {
     return this.http.post<ProductModel>(`${HOST}${BASE_URL}${PRODUCT}${SUBTRACT}${publicId}`, quantity);
   }
 
-  findAllProducts(): Observable<ProductModel[]> {
-    return this.http.get<ProductModel[]>(`${HOST}${BASE_URL}${PRODUCT_SEARCH}`)
+  findAllProducts(search: SearchProductModel): Observable<ProductResponse> {
+    return this.http.post<ProductResponse>(`${HOST}${BASE_URL}${PRODUCT_SEARCH}`, search)
   }
 }
