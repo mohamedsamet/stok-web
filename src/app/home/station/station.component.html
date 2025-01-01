@@ -36,6 +36,6 @@
     <app-finalize (valid)="finalize($event)"></app-finalize>
     <app-transformation [products]="products" (reload)="reload()"></app-transformation>
     <app-station-update (submitUpdate)="updateStation($event)"></app-station-update>
-    <h6 class="d-flex mt-5 justify-content-center" *ngIf="stationCount === 0">Aucune station trouvée</h6>
+    <h6 class="d-flex mt-5 justify-content-center" *ngIf="stationCount === 0 && !isLoading">Aucune station trouvée</h6>
   </div>
 </div>
