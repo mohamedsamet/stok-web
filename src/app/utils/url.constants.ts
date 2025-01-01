@@ -2,6 +2,7 @@
 export const BASE_URL: string = '/api/stok';
 export const USER: string = '/user';
 export const STATION: string = '/station';
+export const STATION_SEARCH: string = '/station/search';
 export const CLOSE: string = '/close';
 export const TRANSFORMATION: string = '/transformation';
 export const LOGIN: string = '/auth/login';

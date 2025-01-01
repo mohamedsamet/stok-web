@@ -30,6 +30,9 @@
         </tr>
       </tbody>
     </table>
+    <app-placeholder [isLoading]="isLoading"></app-placeholder>
+    <app-pagination [count]="stationCount" (selectPage)="changePage($event)"></app-pagination>
+
     <app-finalize (valid)="finalize($event)"></app-finalize>
     <app-transformation [products]="products" (reload)="reload()"></app-transformation>
     <app-station-update (submitUpdate)="updateStation($event)"></app-station-update>

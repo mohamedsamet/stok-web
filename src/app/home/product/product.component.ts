@@ -45,6 +45,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   @ViewChild(ProductQuantityComponent) productQuantity?: ProductQuantityComponent;
   @ViewChild(ProductUpdateComponent) productUpdate?: ProductUpdateComponent;
   @ViewChild(RemoveComponent) removeComponent?: RemoveComponent;
+  @ViewChild(PaginationComponent) pagination?: PaginationComponent;
 
   ngOnInit(): void {
     this.listenToSearch();
@@ -83,6 +84,7 @@ export class ProductComponent implements OnInit, OnDestroy {
           this.toastService.showSucess(`Produit <${response.name}> créé avec succées`);
           this.search = "";
           this.products = this.findProducts();
+          this.pagination?.init();
         }),
         catchError(() => {
           this.toastService.showFail('Problème survenu lors de la création du produit');

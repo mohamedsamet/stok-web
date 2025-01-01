@@ -1,4 +1,5 @@
 import {TransformationModel} from "./transformation/transformation.model";
+import {ProductType} from "../product/product.model";
 
 export interface StationModel {
   publicId: string;
@@ -11,10 +12,20 @@ export interface StationModel {
   transformations: TransformationModel[];
 }
 
+export interface StationResponse {
+  stations: StationModel[];
+  count: number;
+}
+
 export interface StationRequest {
   provider: string;
   name: string;
   initialValue: number;
   publicId?: string;
+}
+
+export interface SearchStationModel {
+  name?: string;
+  page: number;
 }
 

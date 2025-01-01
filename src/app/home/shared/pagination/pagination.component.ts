@@ -1,9 +1,10 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {CommonModule} from "@angular/common";
+import {PaginationPipe} from "../pipe/pagination.pipe";
 
 @Component({
   selector: 'app-pagination',
-  imports: [CommonModule],
+  imports: [CommonModule, PaginationPipe],
   standalone: true,
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.scss']
@@ -19,9 +20,14 @@ export class PaginationComponent {
     this.pages = Array.from({length: total}, (_,index) => index + 1)
   };
 
-
   select(page: number) {
-    this.currentPage = page;
-    this.selectPage.emit(page);
+    if (Number.isInteger(page)) {
+      this.currentPage = page;
+      this.selectPage.emit(page);
+    }
+  }
+
+  public init() {
+    this.currentPage = 1;
   }
 }

@@ -2,8 +2,8 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {HOST} from "../../environments/environment";
-import {BASE_URL, CLOSE, PRODUCT, STATION} from "../utils/url.constants";
-import {StationModel, StationRequest} from "../home/station/station.model";
+import {BASE_URL, CLOSE, PRODUCT, STATION, STATION_SEARCH} from "../utils/url.constants";
+import {SearchStationModel, StationModel, StationRequest, StationResponse} from "../home/station/station.model";
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +12,8 @@ export class StationService {
 
   constructor(private http: HttpClient) { }
 
-  findStations(): Observable<StationModel[]> {
-    return this.http.get<StationModel[]>(`${HOST}${BASE_URL}${STATION}`)
+  findStations(searchModel: SearchStationModel): Observable<StationResponse> {
+    return this.http.post<StationResponse>(`${HOST}${BASE_URL}${STATION_SEARCH}`, searchModel)
   }
 
   createStation(station: StationRequest): Observable<StationModel> {
