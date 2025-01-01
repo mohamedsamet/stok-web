@@ -16,7 +16,31 @@
       <div class="modal-body">
         Etes vous sure de vouloir cloturer la stations {{stationName}}
 
+        <div *ngIf="transformationOut.length !== 0 || transformationIn.length !== 0"
+             class="d-flex justify-content-between">
+          <div class="col-4 d-flex justify-content-center align-items-center">
+            <div>
+              <div *ngFor="let transIn of transformationIn" class="d-block">
+                <strong>{{transIn.product?.name + ' : ' + transIn.quantity}}</strong></div>
+            </div>
+          </div>
+          <div class="col-4 d-flex justify-content-around align-items-center">
+            <i class="bi bi-arrow-right-square-fill h1"></i>
+          </div>
+          <div class="col-4 d-flex justify-content-center align-items-center">
+            <div>
+              <div *ngFor="let transOut of transformationOut" class="d-block">
+                <strong>{{transOut.product?.name + ' : ' + transOut.quantity}}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="transformationOut.length === 0 && transformationIn.length === 0">
+          <strong>Aucune transformation affectée à la station</strong>
+        </div>
       </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Non</button>
         <button type="button" class="btn btn-sm btn-outline-success" data-bs-dismiss="modal" (click)="valid.emit(stationPublicId)">

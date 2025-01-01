@@ -1,5 +1,4 @@
 import {TransformationModel} from "./transformation/transformation.model";
-import {ProductType} from "../product/product.model";
 
 export interface StationModel {
   publicId: string;
