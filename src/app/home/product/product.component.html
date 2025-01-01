@@ -37,11 +37,13 @@
       </tr>
       </tbody>
     </table>
+    <app-placeholder [isLoading]="isLoading"></app-placeholder>
+    <app-pagination [count]="productCount" (selectPage)="changePage($event)"></app-pagination>
     <app-product-quantity [mode]="quantityMode"
                           (addQuantity)="addQuantity($event)"
                           (subtractQuantity)="subtractQuantity($event)"></app-product-quantity>
     <app-product-update (submitUpdate)="updateProduct($event)"></app-product-update>
     <app-remove (validDelete)="deleteProduct($event)"></app-remove>
-    <h6 class="d-flex mt-5 justify-content-center" *ngIf="productCount === 0">Aucun produit trouvé</h6>
+    <h6 class="d-flex mt-5 justify-content-center" *ngIf="productCount === 0 && !isLoading">Aucun produit trouvé</h6>
   </div>
 </div>

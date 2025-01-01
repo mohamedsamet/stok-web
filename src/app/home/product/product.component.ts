@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {RouterModule} from "@angular/router";
-import {Observable} from "rxjs";
+import {Observable, Subject, Subscription} from "rxjs";
 import {
   ProductModel,
   ProductQuantityModel,
@@ -18,11 +18,12 @@ import {ToastService} from "../../shared/toast/toast.service";
 import {ProductUpdateComponent} from "./update/product-update.component";
 import {RemoveComponent} from "../shared/remove/remove.component";
 import {ProductQuantityComponent} from "./quantity/product-quantity.component";
-import {Subject, Subscription} from "rxjs";
+import {PaginationComponent} from "../shared/pagination/pagination.component";
+import {PlaceholderComponent} from "../shared/placeholder/placeholder.component";
 
 @Component({
   selector: 'app-product',
-  imports: [RouterModule, CommonModule, FormsModule, ProductQuantityComponent, ProductCreateComponent, ProductUpdateComponent, RemoveComponent],
+  imports: [RouterModule, CommonModule, FormsModule, PaginationComponent, PlaceholderComponent, ProductQuantityComponent, ProductCreateComponent, ProductUpdateComponent, RemoveComponent],
   standalone: true,
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss']
@@ -38,6 +39,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   products: Observable<ProductModel[]> = this.findProducts();
   productCount: number = 0;
   typeEnum = ProductType;
+  isLoading = true;
   quantityMode = '';
 
   @ViewChild(ProductQuantityComponent) productQuantity?: ProductQuantityComponent;
@@ -53,7 +55,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   private findProducts(search?: string, page: number = 0): Observable<ProductModel[]> {
-
+    this.isLoading = true;
     const searchRequest = {
       types: [this.type],
       name: search,
@@ -62,6 +64,7 @@ export class ProductComponent implements OnInit, OnDestroy {
     return this.productService.findAllProducts(searchRequest).pipe(
       tap((products: ProductResponse) => {
         this.productCount = products.count;
+        this.isLoading = false;
       }),
       map(productModel => productModel.products)
     )
@@ -161,5 +164,9 @@ export class ProductComponent implements OnInit, OnDestroy {
       distinctUntilChanged(),
       tap((searchQuery: string) => this.products = this.findProducts(searchQuery))
     ).subscribe()
+  }
+
+  changePage(page: number) {
+    this.products = this.findProducts(this.search, page - 1);
   }
 }
