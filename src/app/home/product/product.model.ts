@@ -6,6 +6,7 @@ export interface ProductModel {
   quantity: number;
   unit: string;
   type: ProductType;
+  reference: string;
 }
 
 export interface ProductResponse {

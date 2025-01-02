@@ -9,7 +9,16 @@ import {
 } from "../home/product/product.model";
 import {HttpClient} from "@angular/common/http";
 import {HOST} from "../../environments/environment";
-import {BASE_URL, PRODUCT, LOGIN, PRODUCT_SEARCH_BY_TYPE, ADD, SUBTRACT, PRODUCT_SEARCH} from "../utils/url.constants";
+import {
+  BASE_URL,
+  PRODUCT,
+  LOGIN,
+  PRODUCT_SEARCH_BY_TYPE,
+  ADD,
+  SUBTRACT,
+  PRODUCT_SEARCH,
+  DRAFT
+} from "../utils/url.constants";
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +26,10 @@ import {BASE_URL, PRODUCT, LOGIN, PRODUCT_SEARCH_BY_TYPE, ADD, SUBTRACT, PRODUCT
 export class ProductService {
 
   constructor(private http: HttpClient) { }
+
+  createDraftProduct(): Observable<ProductModel> {
+    return this.http.post<ProductModel>(`${HOST}${BASE_URL}${PRODUCT}${DRAFT}`, {})
+  }
 
   createProduct(product: ProductRequest): Observable<ProductModel> {
     return this.http.post<ProductModel>(`${HOST}${BASE_URL}${PRODUCT}`, product)

@@ -1,9 +1,8 @@
-import {Component, OnInit, Output, EventEmitter, Input} from "@angular/core";
+import {Component, OnInit, Output, EventEmitter, Input, OnDestroy} from "@angular/core";
 import {RouterModule} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ProductRequest, ProductType, ProductUnit} from "../product.model";
-
 
 @Component({
   selector: 'app-product-create',
@@ -14,7 +13,9 @@ import {ProductRequest, ProductType, ProductUnit} from "../product.model";
 export class ProductCreateComponent implements OnInit {
   typeEnum = ProductType;
   unitEnum = ProductUnit;
-  @Output() submitCreation = new EventEmitter<ProductRequest>()
+  @Input() reference = "";
+  @Output() submitCreation = new EventEmitter<ProductRequest>();
+  @Output() createDraft = new EventEmitter<any>();
 
   formGroup: FormGroup = new FormGroup<any>({});
   constructor(private fb: FormBuilder) {
@@ -27,7 +28,7 @@ export class ProductCreateComponent implements OnInit {
       initialValue: ['', Validators.required],
       unit: ['', Validators.required],
       type: ['', Validators.required],
-    })
+    });
   }
 
   submit() {

@@ -2,7 +2,8 @@
 <button type="button"
         class="btn btn-success btn-sm"
         data-bs-toggle="modal"
-        data-bs-target="#staticBackdrop">
+        data-bs-target="#staticBackdrop"
+        (click)="createDraft.emit()">
   <i class="bi bi-plus-circle-fill pe-2"></i>
   Créer un produit
 </button>
@@ -11,7 +12,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Créer un produit</h1>
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Créer un produit, Référence : {{reference}}</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">

@@ -41,6 +41,9 @@ export class ProductComponent implements OnInit, OnDestroy {
   typeEnum = ProductType;
   isLoading = true;
   quantityMode = '';
+  publicId = '';
+  reference = '';
+  createDraftSubscription = new Subscription();
 
   @ViewChild(ProductQuantityComponent) productQuantity?: ProductQuantityComponent;
   @ViewChild(ProductUpdateComponent) productUpdate?: ProductUpdateComponent;
@@ -53,6 +56,7 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.searchSubscription.unsubscribe();
+    this.createDraftSubscription.unsubscribe();
   }
 
   private findProducts(search?: string, page: number = 0): Observable<ProductModel[]> {
@@ -78,6 +82,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   createProduct(productForm: ProductRequest) {
+    productForm.publicId = this.publicId;
     this.productService.createProduct(productForm)
       .pipe(
         tap((response: ProductModel) => {
@@ -85,6 +90,7 @@ export class ProductComponent implements OnInit, OnDestroy {
           this.search = "";
           this.products = this.findProducts();
           this.pagination?.init();
+          this.createDraftSubscription.unsubscribe();
         }),
         catchError(() => {
           this.toastService.showFail('Problème survenu lors de la création du produit');
@@ -170,5 +176,14 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   changePage(page: number) {
     this.products = this.findProducts(this.search, page - 1);
+  }
+
+
+  createDraftProduct() {
+    this.createDraftSubscription = this.productService.createDraftProduct()
+      .subscribe(productModel => {
+        this.publicId = productModel?.publicId;
+        this.reference = productModel?.reference;
+      })
   }
 }

@@ -10,13 +10,14 @@
       <input type="radio" [value]="typeEnum.FINAL" [ngModel]="type" (ngModelChange)="change(typeEnum.FINAL)" class="btn-sm btn-check" name="btnradio2" id="btnradio2" autocomplete="off">
       <label class="btn btn-sm btn-outline-dark" for="btnradio2">Produit final</label>
     </div>
-    <app-product-create (submitCreation)="createProduct($event)" class="ms-auto"></app-product-create>
+    <app-product-create [reference]="reference" (createDraft)="createDraftProduct()" (submitCreation)="createProduct($event)" class="ms-auto"></app-product-create>
   </div>
   <div class="mt-3">
     <table *ngIf="products | async as productData" class="table">
       <thead>
       <tr>
         <th scope="col">Nom</th>
+        <th scope="col">Réference</th>
         <th scope="col">Fournisseur</th>
         <th scope="col">Quantité</th>
         <th scope="col">Unité</th>
@@ -26,6 +27,7 @@
       <tbody *ngIf="productCount > 0">
       <tr *ngFor="let item of productData">
         <td class="text-decoration-underline" style="cursor:pointer" (click)="productUpdate?.openUpdateModal(item)">{{item.name}}</td>
+        <td>{{item.reference}}</td>
         <td>{{item.provider}}</td>
         <td>{{item.quantity}}</td>
         <td>{{item.unit}}</td>

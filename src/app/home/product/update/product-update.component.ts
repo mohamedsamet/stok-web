@@ -3,7 +3,6 @@ import {RouterModule} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ProductModel, ProductRequest, ProductType, ProductUnit} from "../product.model";
-import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-product-update',
@@ -17,7 +16,7 @@ export class ProductUpdateComponent implements OnInit {
   productPublicId: string = "";
   @ViewChild("btnUpdateModal") btn: ElementRef<HTMLButtonElement> | undefined;
   @Output() submitUpdate = new EventEmitter<ProductRequest>()
-
+  product: ProductModel = {} as ProductModel;
   formGroup: FormGroup = new FormGroup<any>({});
   constructor(private fb: FormBuilder) {
   }
@@ -32,14 +31,17 @@ export class ProductUpdateComponent implements OnInit {
   }
 
   submit() {
-    const request: ProductRequest = this.formGroup.value as ProductRequest;
-    request.publicId = this.productPublicId;
-    this.submitUpdate.emit(request);
+    if (!this.sameProduct()) {
+      const request: ProductRequest = this.formGroup.value as ProductRequest;
+      request.publicId = this.productPublicId;
+      this.submitUpdate.emit(request);
+    }
     this.formGroup.reset();
   }
 
   public openUpdateModal(product: ProductModel) {
     if (product.publicId) {
+      this.product = product;
       this.productPublicId = product.publicId;
       this.formGroup.patchValue({
         name: product.name,
@@ -49,5 +51,12 @@ export class ProductUpdateComponent implements OnInit {
       });
       this.btn?.nativeElement?.click();
     }
+  }
+
+  private sameProduct() {
+    return this.product.name === this.formGroup.get('name')?.value
+      && this.product.provider === this.formGroup.get('provider')?.value
+      && this.product.unit === this.formGroup.get('unit')?.value
+      && this.product.type === this.formGroup.get('type')?.value;
   }
 }

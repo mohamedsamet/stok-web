@@ -8,7 +8,7 @@ export const httpErrorInterceptor: HttpInterceptorFn = ((req, next) => {
   const router = inject(Router);
   return next(req).pipe(
     catchError((error) => {
-      if (error.status === 403) {
+      if ([403, 401].includes(error.status)) {
         localStorage.removeItem('Authorization');
         router.navigate(['/login']);
       }
