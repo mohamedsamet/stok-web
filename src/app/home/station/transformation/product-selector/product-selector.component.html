@@ -6,10 +6,14 @@
         {{(transformation.product?.name | ellipsis:12) || 'Choisir'}}
       </button>
       <ul class="dropdown-menu">
-        <li *ngFor="let product of productsData;"><a
-          (click)="selectProductTransform.emit({publicId: transformation?.publicId || '', product: product})"
-          style="cursor: pointer"
-          class="dropdown-item">{{product.name}}</a></li>
+        <div class="mb-3 mx-2">
+          <input type="email" [ngModel]="searchProduct" (ngModelChange)="searchProductEvent.emit($event); searchProduct = $event" class="form-control form-control-sm" placeholder="Rechercher">
+        </div>
+        <li *ngFor="let product of productsData;">
+          <a (click)="selectProductTransform.emit({publicId: transformation?.publicId || '', product: product})"
+             [class.active]="transformation.product?.name === product.name"
+          class="dropdown-item">{{product.name}}</a>
+        </li>
       </ul>
     </div>
     <div class="input-group input-group-sm">

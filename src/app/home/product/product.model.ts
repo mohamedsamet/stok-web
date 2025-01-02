@@ -46,5 +46,6 @@ export interface SelectProductModel {
 export interface SearchProductModel {
   name?: string;
   types?: ProductType[];
-  page: number;
+  pageSize?: number;
+  page?: number;
 }

@@ -10,7 +10,8 @@ import {EllipsisPipe} from "../../../shared/pipe/ellipsis.pipe";
   selector: 'app-product-selector',
   imports: [RouterModule, CommonModule, FormsModule, EllipsisPipe],
   standalone: true,
-  templateUrl: './product-selector.component.html'
+  templateUrl: './product-selector.component.html',
+  styleUrls: ['./product-selector.component.scss']
 })
 export class ProductSelectorComponent {
 
@@ -20,5 +21,11 @@ export class ProductSelectorComponent {
   @Output() addTransformation = new EventEmitter<number>()
   @Output() selectProductTransform = new EventEmitter<SelectProductModel>()
   @Output() removeTransformation = new EventEmitter<string>()
+  @Output() searchProductEvent = new EventEmitter<string>()
+  searchProduct = '';
+
+  public initSearch() {
+    this.searchProduct = '';
+  }
 
 }

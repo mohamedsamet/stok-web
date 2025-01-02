@@ -10,8 +10,7 @@ import {StationService} from "../../service/station.service";
 import {StationCreateComponent} from "./creation/station-create.component";
 import {StationUpdateComponent} from "./update/station-update.component";
 import {TransformationComponent} from "./transformation/transformation.component";
-import {ProductModel, ProductResponse, ProductType, SearchProductModel} from "../product/product.model";
-import {ProductService} from "../../service/product.service";
+import {ProductModel} from "../product/product.model";
 import {FinalizeComponent} from "./cloture/finalize.component";
 import {PaginationComponent} from "../shared/pagination/pagination.component";
 import {PlaceholderComponent} from "../shared/placeholder/placeholder.component";
@@ -26,13 +25,11 @@ import {RemoveComponent} from "../shared/remove/remove.component";
 export class StationComponent {
 
   constructor(private stationService: StationService,
-              private toastService: ToastService,
-              private productService: ProductService) {
+              private toastService: ToastService) {
   }
 
   stations: Observable<StationModel[]> = this.findStations();
   stationCount: number = 0;
-  products: Observable<ProductModel[]> = this.findProducts();
   isLoading = true;
   reference = "";
   publicId = "";
@@ -41,16 +38,6 @@ export class StationComponent {
   @ViewChild(StationUpdateComponent) stationUpdate?: StationUpdateComponent;
   @ViewChild(PaginationComponent) pagination?: PaginationComponent;
   @ViewChild(RemoveComponent) removeComponent?: RemoveComponent;
-
-  private findProducts(): Observable<ProductModel[]> {
-    const searchRequest: SearchProductModel = {
-      page: 0,
-      types: [ProductType.RAW, ProductType.FINAL]
-    } as SearchProductModel;
-    return this.productService.findAllProducts(searchRequest).pipe(
-      map((products: ProductResponse) => products.products)
-    );
-  }
 
   private findStations(search?: string | null, page: number = 0): Observable<StationModel[]> {
     this.isLoading = true;
