@@ -170,7 +170,10 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.searchSubscription = this.searchSubject.asObservable().pipe(
       debounceTime(500),
       distinctUntilChanged(),
-      tap((searchQuery: string) => this.products = this.findProducts(searchQuery))
+      tap((searchQuery: string) => {
+        this.products = this.findProducts(searchQuery);
+        this.pagination?.init();
+      })
     ).subscribe()
   }
 

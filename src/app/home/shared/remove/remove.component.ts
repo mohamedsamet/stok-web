@@ -2,7 +2,6 @@ import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from "@an
 import {RouterModule} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
-import {RemoveModel} from "./remove.model";
 
 @Component({
   selector: 'app-remove',

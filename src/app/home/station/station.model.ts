@@ -8,6 +8,7 @@ export interface StationModel {
   duration: number;
   machine: string;
   closed: boolean;
+  reference: string;
   transformations: TransformationModel[];
 }
 

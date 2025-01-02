@@ -15,10 +15,11 @@ import {ProductService} from "../../service/product.service";
 import {FinalizeComponent} from "./cloture/finalize.component";
 import {PaginationComponent} from "../shared/pagination/pagination.component";
 import {PlaceholderComponent} from "../shared/placeholder/placeholder.component";
+import {RemoveComponent} from "../shared/remove/remove.component";
 
 @Component({
   selector: 'app-station',
-  imports: [RouterModule, CommonModule, FormsModule, PaginationComponent, PlaceholderComponent, StationCreateComponent, StationUpdateComponent, FinalizeComponent, TransformationComponent],
+  imports: [RouterModule, CommonModule, FormsModule, PaginationComponent, RemoveComponent, PlaceholderComponent, StationCreateComponent, StationUpdateComponent, FinalizeComponent, TransformationComponent],
   standalone: true,
   templateUrl: './station.component.html'
 })
@@ -33,10 +34,13 @@ export class StationComponent {
   stationCount: number = 0;
   products: Observable<ProductModel[]> = this.findProducts();
   isLoading = true;
+  reference = "";
+  publicId = "";
   @ViewChild(FinalizeComponent) finalizeComponent?: FinalizeComponent;
   @ViewChild(TransformationComponent) transformationComponent?: TransformationComponent;
   @ViewChild(StationUpdateComponent) stationUpdate?: StationUpdateComponent;
   @ViewChild(PaginationComponent) pagination?: PaginationComponent;
+  @ViewChild(RemoveComponent) removeComponent?: RemoveComponent;
 
   private findProducts(): Observable<ProductModel[]> {
     const searchRequest: SearchProductModel = {
@@ -64,6 +68,7 @@ export class StationComponent {
   }
 
   createStation(stationForm: StationRequest) {
+    stationForm.publicId = this.publicId;
     this.stationService.createStation(stationForm)
       .pipe(
         tap((response: StationModel) => {
@@ -115,5 +120,30 @@ export class StationComponent {
 
   changePage(page: number) {
     this.stations = this.findStations(null, page - 1);
+  }
+
+  createStationDraft() {
+    this.stationService.createDraft()
+      .subscribe(draftStation => {
+        this.reference = draftStation?.reference
+        this.publicId = draftStation?.publicId
+      })
+
+  }
+
+  deleteStation(station: StationModel) {
+    this.stationService.removeStation(station.publicId)
+      .pipe(
+        tap((response) => {
+          this.toastService.showSucess(`La station <${station.name}> est supprimée avec succées`);
+          this.stations = this.findStations();
+          this.pagination?.init();
+        }),
+        catchError(() => {
+          this.toastService.showFail('Problème survenu lors de la suppression de la station');
+          return new Observable();
+        })
+      )
+      .subscribe()
   }
 }
