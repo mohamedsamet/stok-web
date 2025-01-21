@@ -7,7 +7,7 @@
 </button>
 
 <div class="modal fade" [id]="'fModal'" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog" style="min-width: 800px">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="updateModalLabel">Cloture de la station {{stationName}}</h1>
@@ -23,8 +23,11 @@
                class="d-flex justify-content-between">
             <div class="col-4 d-flex justify-content-center align-items-center">
               <div>
-                <div *ngFor="let transIn of transformationIn" class="d-block">
-                  <strong>{{transIn.product?.name + ' : ' + transIn.quantity}}</strong></div>
+                <div *ngFor="let transIn of transformationIn" class="justify-content-center">
+                  <strong>{{transIn.product?.name + ' : '}}</strong>
+                  <span>{{transIn?.product?.quantity}}</span>
+                  <span class="text-danger fs-6 fw-semibold">{{' - ' + transIn?.quantity}}</span>
+                </div>
               </div>
             </div>
             <div class="col-4 d-flex justify-content-around align-items-center">
@@ -33,7 +36,9 @@
             <div class="col-4 d-flex justify-content-center align-items-center">
               <div>
                 <div *ngFor="let transOut of transformationOut" class="d-block">
-                  <strong>{{transOut.product?.name + ' : ' + transOut.quantity}}</strong>
+                  <strong>{{transOut.product?.name + ' : '}}</strong>
+                  <span>{{transOut?.product?.quantity}}</span>
+                  <span class="text-success fs-6 fw-semibold">{{' + ' + transOut?.quantity}}</span>
                 </div>
               </div>
             </div>

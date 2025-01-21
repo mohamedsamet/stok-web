@@ -12,7 +12,11 @@
         <li *ngFor="let product of productsData;">
           <a (click)="selectProductTransform.emit({publicId: transformation?.publicId || '', product: product})"
              [class.active]="transformation.product?.name === product.name"
-          class="dropdown-item">{{product.name}}</a>
+             class="dropdown-item d-flex justify-content-between">
+            <span>{{product.name}}</span>
+            <span class="pe-1 ps-4 fs-6 fw-semibold text-success" [ngClass]="{'text-danger': product.quantity < 20,
+            'text-warning': product.quantity < 100}">{{product.quantity}}</span>
+          </a>
         </li>
       </ul>
     </div>
