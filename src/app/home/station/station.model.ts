@@ -24,8 +24,3 @@ export interface StationRequest {
   publicId?: string;
 }
 
-export interface SearchStationModel {
-  name?: string;
-  page: number;
-}
-

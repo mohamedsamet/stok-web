@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {RouterModule} from "@angular/router";
 import {Observable} from "rxjs";
-import {SearchStationModel, StationModel, StationRequest, StationResponse} from "./station.model";
+import {StationModel, StationRequest, StationResponse} from "./station.model";
 import {CommonModule} from "@angular/common";
 import {catchError, map, tap} from "rxjs/operators";
 import {FormsModule} from "@angular/forms";
@@ -10,11 +10,11 @@ import {StationService} from "../../service/station.service";
 import {StationCreateComponent} from "./creation/station-create.component";
 import {StationUpdateComponent} from "./update/station-update.component";
 import {TransformationComponent} from "./transformation/transformation.component";
-import {ProductModel} from "../product/product.model";
 import {FinalizeComponent} from "./cloture/finalize.component";
 import {PaginationComponent} from "../shared/pagination/pagination.component";
 import {PlaceholderComponent} from "../shared/placeholder/placeholder.component";
 import {RemoveComponent} from "../shared/remove/remove.component";
+import {SearchModel} from "../shared/model/search.model";
 
 @Component({
   selector: 'app-station',
@@ -44,7 +44,7 @@ export class StationComponent {
     const searchRequest = {
       name: search,
       page: page
-    } as SearchStationModel;
+    } as SearchModel;
     return this.stationService.findStations(searchRequest).pipe(
       tap((stations: StationResponse) => {
         this.stationCount = stations.count;

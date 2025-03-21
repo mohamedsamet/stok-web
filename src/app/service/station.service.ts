@@ -2,8 +2,9 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {HOST} from "../../environments/environment";
-import {BASE_URL, CLOSE, DRAFT, PRODUCT, STATION, STATION_SEARCH} from "../utils/url.constants";
-import {SearchStationModel, StationModel, StationRequest, StationResponse} from "../home/station/station.model";
+import {BASE_URL, CLOSE, DRAFT, STATION, STATION_SEARCH} from "../utils/url.constants";
+import {StationModel, StationRequest, StationResponse} from "../home/station/station.model";
+import {SearchModel} from "../home/shared/model/search.model";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class StationService {
 
   constructor(private http: HttpClient) { }
 
-  findStations(searchModel: SearchStationModel): Observable<StationResponse> {
+  findStations(searchModel: SearchModel): Observable<StationResponse> {
     return this.http.post<StationResponse>(`${HOST}${BASE_URL}${STATION_SEARCH}`, searchModel)
   }
 
