@@ -13,13 +13,13 @@ import {CommonModule} from "@angular/common";
 import {ProductService} from "../../service/product.service";
 import {catchError, debounceTime, distinctUntilChanged, map, tap} from "rxjs/operators";
 import {FormsModule} from "@angular/forms";
-import {ProductCreateComponent} from "./creation/product-create.component";
 import {ToastService} from "../../shared/toast/toast.service";
 import {ProductUpdateComponent} from "./update/product-update.component";
 import {RemoveComponent} from "../shared/remove/remove.component";
 import {ProductQuantityComponent} from "./quantity/product-quantity.component";
 import {PaginationComponent} from "../shared/pagination/pagination.component";
 import {PlaceholderComponent} from "../shared/placeholder/placeholder.component";
+import {ProductCreateComponent} from "./creation/product-create.component";
 
 @Component({
   selector: 'app-product',
