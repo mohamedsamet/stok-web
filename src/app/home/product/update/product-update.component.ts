@@ -27,6 +27,7 @@ export class ProductUpdateComponent implements OnInit {
       provider: [''],
       unit: ['', Validators.required],
       type: ['', Validators.required],
+      price: ['']
     })
   }
 
@@ -47,7 +48,8 @@ export class ProductUpdateComponent implements OnInit {
         name: product.name,
         provider: product.provider,
         unit: product.unit,
-        type: product.type
+        type: product.type,
+        price: product.price
       });
       this.btn?.nativeElement?.click();
     }
@@ -57,6 +59,7 @@ export class ProductUpdateComponent implements OnInit {
     return this.product.name === this.formGroup.get('name')?.value
       && this.product.provider === this.formGroup.get('provider')?.value
       && this.product.unit === this.formGroup.get('unit')?.value
+      && this.product.price === this.formGroup.get('price')?.value
       && this.product.type === this.formGroup.get('type')?.value;
   }
 }
