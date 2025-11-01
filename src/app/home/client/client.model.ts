@@ -5,6 +5,7 @@ export interface ClientModel {
   reference: string;
   address: string;
   email: string;
+  fiscalId: string;
 }
 
 export interface ClientResponse {
@@ -17,6 +18,7 @@ export interface ClientRequest {
   email: string;
   address: string;
   publicId: string;
+  fiscalId: string;
 }
 
 export interface SearchClientModel {

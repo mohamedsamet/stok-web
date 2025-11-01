@@ -24,6 +24,7 @@ export class ClientCreateComponent implements OnInit {
       name: ['', Validators.required],
       address: [''],
       email: ['', Validators.email],
+      fiscalId: [''],
     });
   }
 

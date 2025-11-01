@@ -24,6 +24,7 @@ export class ClientUpdateComponent implements OnInit {
       name: ['', Validators.required],
       address: [''],
       email: ['', Validators.email],
+      fiscalId: [''],
     })
   }
 
@@ -52,6 +53,7 @@ export class ClientUpdateComponent implements OnInit {
   private sameClient() {
     return this.client.name === this.formGroup.get('name')?.value
       && this.client.address === this.formGroup.get('address')?.value
+      && this.client.fiscalId === this.formGroup.get('fiscalId')?.value
       && this.client.email === this.formGroup.get('email')?.value;
   }
 }
