@@ -5,6 +5,7 @@ import {TokenValidGuard} from "./route-guard/token-valid.guard";
 import {ProductComponent} from "./home/product/product.component";
 import {StationComponent} from "./home/station/station.component";
 import {ClientComponent} from "./home/client/client.component";
+import {InvoiceComponent} from "./home/invoice/invoice.component";
 
 export const routes: Routes = [
   {
@@ -32,6 +33,10 @@ export const routes: Routes = [
       {
         path: "client",
         component: ClientComponent
+      },
+      {
+        path: "invoice",
+        component: InvoiceComponent
       },
     ]
   }

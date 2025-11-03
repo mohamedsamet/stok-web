@@ -1,3 +1,4 @@
+import {ProductModel} from "../product/product.model";
 
 export interface ClientModel {
   publicId: string;
@@ -25,4 +26,9 @@ export interface SearchClientModel {
   name?: string;
   pageSize?: number;
   page?: number;
+}
+
+export interface SelectClientModel {
+  publicId: string;
+  client: ClientModel;
 }

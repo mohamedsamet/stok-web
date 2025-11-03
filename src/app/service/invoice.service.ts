@@ -1,0 +1,32 @@
+import {Injectable} from "@angular/core";
+import {Observable} from "rxjs";
+import {HttpClient} from "@angular/common/http";
+import {HOST} from "../../environments/environment";
+import {BASE_URL, CLIENT, CLIENT_SEARCH, CLOSE, DRAFT, INVOICE, INVOICE_SEARCH} from "../utils/url.constants";
+import {ClientModel, ClientRequest, ClientResponse, SearchClientModel} from "../home/client/client.model";
+import {InvoiceModel, InvoiceRequest, InvoiceResponse, SearchInvoiceModel} from "../home/invoice/invoice.model";
+
+@Injectable({
+  providedIn: 'root'
+})
+export class InvoiceService {
+
+  constructor(private http: HttpClient) { }
+
+  createDraftInvoice(): Observable<InvoiceModel> {
+    return this.http.post<InvoiceModel>(`${HOST}${BASE_URL}${INVOICE}${DRAFT}`, {})
+  }
+
+  createInvoice(invoice: InvoiceRequest): Observable<InvoiceModel> {
+    return this.http.post<InvoiceModel>(`${HOST}${BASE_URL}${INVOICE}`, invoice)
+  }
+
+  closeInvoice(publicId: string): Observable<InvoiceModel> {
+    return this.http.post<InvoiceModel>(`${HOST}${BASE_URL}${INVOICE}${CLOSE}/${publicId}`, {})
+  }
+
+  findInvoices(search: SearchInvoiceModel): Observable<InvoiceResponse> {
+    return this.http.post<InvoiceResponse>(`${HOST}${BASE_URL}${INVOICE_SEARCH}`, search)
+  }
+
+}
