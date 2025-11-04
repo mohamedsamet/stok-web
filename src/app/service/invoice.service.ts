@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {HOST} from "../../environments/environment";
-import {BASE_URL, CLIENT, CLIENT_SEARCH, CLOSE, DRAFT, INVOICE, INVOICE_SEARCH} from "../utils/url.constants";
+import {BASE_URL, CLIENT, CLIENT_SEARCH, CLOSE, DRAFT, EXPORT, INVOICE, INVOICE_SEARCH} from "../utils/url.constants";
 import {ClientModel, ClientRequest, ClientResponse, SearchClientModel} from "../home/client/client.model";
 import {InvoiceModel, InvoiceRequest, InvoiceResponse, SearchInvoiceModel} from "../home/invoice/invoice.model";
 
@@ -27,6 +27,13 @@ export class InvoiceService {
 
   findInvoices(search: SearchInvoiceModel): Observable<InvoiceResponse> {
     return this.http.post<InvoiceResponse>(`${HOST}${BASE_URL}${INVOICE_SEARCH}`, search)
+  }
+
+  downloadInvoice(publicId: string) {
+    return this.http.get(`${HOST}${BASE_URL}${EXPORT}${INVOICE}/${publicId}`, {
+      responseType: 'blob',
+      observe: 'response'
+    });
   }
 
 }

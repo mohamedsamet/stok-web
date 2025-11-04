@@ -36,8 +36,9 @@
         <td>{{item.client.name}}</td>
         <td>
           <i *ngIf="!item.closed" (click)="update(item)" class="bi bi-pencil-square h4 me-2"></i>
-          <i *ngIf="item.closed" (click)="readOnlyMode(item)"class="bi bi-bag-check-fill h4"></i>
+          <i *ngIf="item.closed" (click)="readOnlyMode(item)"class="bi bi-bag-check-fill h4 me-2"></i>
           <i *ngIf="!item.closed" (click)="closeComponent?.openCloseModal(item)" class="bi bi-database-check h4 ms-2"></i>
+          <i *ngIf="item.closed" (click)="export(item)" class="bi bi-cloud-download h4 ms-2"></i>
         </td>
       </tr>
       </tbody>

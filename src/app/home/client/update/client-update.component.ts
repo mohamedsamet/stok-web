@@ -23,6 +23,7 @@ export class ClientUpdateComponent implements OnInit {
     this.formGroup = this.fb.group({
       name: ['', Validators.required],
       address: [''],
+      tel: [''],
       email: ['', Validators.email],
       fiscalId: [''],
     })

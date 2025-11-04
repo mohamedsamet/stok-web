@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {RouterModule} from "@angular/router";
 import {Observable, Subject, Subscription} from "rxjs";
 import {CommonModule} from "@angular/common";
-import {debounceTime, distinctUntilChanged, map, tap} from "rxjs/operators";
+import {debounceTime, distinctUntilChanged, map, tap, window} from "rxjs/operators";
 import {FormsModule} from "@angular/forms";
 import {ToastService} from "../../shared/toast/toast.service";
 import {PaginationComponent} from "../shared/pagination/pagination.component";
@@ -111,5 +111,23 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.toast.showSucess(`La Facture N : ${item.reference} est fermée avec succée`)
       })
 
+  }
+
+  export(invoice: InvoiceModel) {
+    this.invoiceService.downloadInvoice(invoice.publicId).subscribe(res => {
+        const blob = res.body as Blob;
+
+        let filename =`Facture-${invoice.reference}.xlsx`
+
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+    );
   }
 }

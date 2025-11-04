@@ -20,6 +20,7 @@ export interface ClientRequest {
   address: string;
   publicId: string;
   fiscalId: string;
+  tel: string;
 }
 
 export interface SearchClientModel {
@@ -28,7 +29,3 @@ export interface SearchClientModel {
   page?: number;
 }
 
-export interface SelectClientModel {
-  publicId: string;
-  client: ClientModel;
-}
