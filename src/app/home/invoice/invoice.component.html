@@ -36,14 +36,14 @@
         <td>{{item.client.name}}</td>
         <td>
           <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Modifier">
-            <i *ngIf="!item.closed" (click)="update(item)" class="bi bi-pencil-square h4 me-2"></i>
+            <i (click)="update(item)" class="bi bi-pencil-square h4 me-2"></i>
           </span>
-          <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Ouvrir en lecture seule">
-            <i *ngIf="item.closed" (click)="readOnlyMode(item)"class="bi bi-bag-check-fill h4 me-2"></i>
-          </span>
-          <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Fermer Facture/BL">
-            <i *ngIf="!item.closed" (click)="closeComponent?.openCloseModal(item)" class="bi bi-database-check h4 me-2"></i>
-          </span>
+<!--          <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Ouvrir en lecture seule">-->
+<!--            <i *ngIf="item.closed" (click)="readOnlyMode(item)"class="bi bi-bag-check-fill h4 me-2"></i>-->
+<!--          </span>-->
+<!--          <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Fermer Facture/BL">-->
+<!--            <i *ngIf="!item.closed" (click)="closeComponent?.openCloseModal(item)" class="bi bi-database-check h4 me-2"></i>-->
+<!--          </span>-->
           <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Générer une BL">
             <i (click)="blToToExport = item" class="bi bi-download h4 me-2" data-bs-toggle="modal" data-bs-target="#confirmBl"></i>
           </span>
