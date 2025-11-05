@@ -60,7 +60,7 @@ export class InvoiceCreateComponent implements OnInit {
       .pipe(
         tap((response: InvoiceModel) => {
           this.savedInvoice = response;
-          this.toastService.showSucess(`Facture: <${response.reference}> créé avec succées`);
+          this.toastService.showSucess(`Facture / Bl: <${response.reference}> créé avec succées`);
         }),
         catchError(() => {
           this.toastService.showFail('Problème survenu lors de la création de la facture');

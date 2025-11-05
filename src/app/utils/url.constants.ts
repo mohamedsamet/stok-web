@@ -14,6 +14,7 @@ export const EXPORT: string = '/export';
 export const PRODUCT: string = '/product';
 export const CLIENT: string = '/client';
 export const INVOICE: string = '/invoice';
+export const BL: string = '/bl';
 export const DRAFT: string = '/draft';
 export const ADD: string = '/add/';
 export const SUBTRACT: string = '/subtract/';

@@ -33,6 +33,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   reference = '';
   createDraftSubscription = new Subscription();
   invoiceToUpdate: InvoiceModel = {} as InvoiceModel;
+  invoiceToExport: InvoiceModel = {} as InvoiceModel;
+  blToToExport: InvoiceModel = {} as InvoiceModel;
   readOnly = false;
   @ViewChild(CloseComponent) closeComponent?: CloseComponent;
   @ViewChild(PaginationComponent) pagination?: PaginationComponent;
@@ -113,11 +115,29 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
   }
 
-  export(invoice: InvoiceModel) {
-    this.invoiceService.downloadInvoice(invoice.publicId).subscribe(res => {
+  exportInvoice() {
+    this.invoiceService.downloadInvoice(this.invoiceToExport.publicId).subscribe(res => {
         const blob = res.body as Blob;
 
-        let filename =`Facture-${invoice.reference}.xlsx`
+        let filename =`Facture-${this.invoiceToExport.reference}.xlsx`
+
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+    );
+  }
+
+  exportIBl() {
+    this.invoiceService.downloadBl(this.blToToExport.publicId).subscribe(res => {
+        const blob = res.body as Blob;
+
+        let filename =`Bl-${this.blToToExport.reference}.xlsx`
 
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');

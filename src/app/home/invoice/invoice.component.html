@@ -35,10 +35,21 @@
         <td>{{item.creationDate | date: 'dd/MM/yyyy'}}</td>
         <td>{{item.client.name}}</td>
         <td>
-          <i *ngIf="!item.closed" (click)="update(item)" class="bi bi-pencil-square h4 me-2"></i>
-          <i *ngIf="item.closed" (click)="readOnlyMode(item)"class="bi bi-bag-check-fill h4 me-2"></i>
-          <i *ngIf="!item.closed" (click)="closeComponent?.openCloseModal(item)" class="bi bi-database-check h4 ms-2"></i>
-          <i *ngIf="item.closed" (click)="export(item)" class="bi bi-cloud-download h4 ms-2"></i>
+          <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Modifier">
+            <i *ngIf="!item.closed" (click)="update(item)" class="bi bi-pencil-square h4 me-2"></i>
+          </span>
+          <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Ouvrir en lecture seule">
+            <i *ngIf="item.closed" (click)="readOnlyMode(item)"class="bi bi-bag-check-fill h4 me-2"></i>
+          </span>
+          <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Fermer Facture/BL">
+            <i *ngIf="!item.closed" (click)="closeComponent?.openCloseModal(item)" class="bi bi-database-check h4 me-2"></i>
+          </span>
+          <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Générer une BL">
+            <i (click)="blToToExport = item" class="bi bi-download h4 me-2" data-bs-toggle="modal" data-bs-target="#confirmBl"></i>
+          </span>
+          <span class="d-inline-block" tabindex="0" data-toggle="tooltip"  title="Générer une Facture">
+            <i *ngIf="item.closed" (click)="invoiceToExport = item" class="bi bi-cloud-download h4" data-bs-toggle="modal" data-bs-target="#confirmInvoice"></i>
+          </span>
         </td>
       </tr>
       </tbody>
@@ -47,5 +58,34 @@
     <app-pagination [count]="invoiceCount" (selectPage)="changePage($event)"></app-pagination>
     <app-close (validClose)="validClose($event)"></app-close>
     <h6 class="d-flex mt-5 justify-content-center" *ngIf="invoiceCount === 0 && !isLoading">Aucune facture trouvée</h6>
+  </div>
+</div>
+
+<div class="modal fade" id="confirmBl" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        Etes vous sure de générer le bon de livraison :  <strong>{{blToToExport.reference}}</strong>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-sm btn-success" data-bs-dismiss="modal" (click)="exportIBl()">Générer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="confirmInvoice" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        Etes vous sure de générer la facture <strong>{{invoiceToExport.reference}}</strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-sm btn-success" data-bs-dismiss="modal" (click)="exportInvoice()">Générer</button>
+      </div>
+    </div>
   </div>
 </div>
