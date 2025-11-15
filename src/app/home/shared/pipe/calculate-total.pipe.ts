@@ -8,11 +8,15 @@ import {AbstractControl} from "@angular/forms";
 })
 export class CalculateTotalPipe implements PipeTransform {
 
-  transform(product: AbstractControl): number {
+  transform(product: AbstractControl, withTva: boolean): number {
     const quantity = product.get('quantity')?.value;
     const unitPrice = product.get('unitPrice')?.value;
     const discount = product.get('discount')?.value;
-    return (unitPrice - (unitPrice * discount / 100))*quantity
+    const tva = product.get('tva')?.value;
+    const totalWithoutTva = (unitPrice - (unitPrice * discount / 100))*quantity;
+    const totalWithTva = totalWithoutTva + (totalWithoutTva * tva / 100);
+
+    return withTva ? totalWithTva : totalWithoutTva;
   }
 
 }

@@ -10,6 +10,7 @@ export const PRODUCT_SEARCH_BY_TYPE: string = '/product/search/type/';
 export const PRODUCT_SEARCH: string = '/product/search';
 export const CLIENT_SEARCH: string = '/client/search';
 export const INVOICE_SEARCH: string = '/invoice/search';
+export const INVOICE_BL_SEARCH: string = '/invoice/bl/search';
 export const EXPORT: string = '/export';
 export const PRODUCT: string = '/product';
 export const CLIENT: string = '/client';

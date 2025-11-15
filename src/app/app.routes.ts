@@ -36,7 +36,13 @@ export const routes: Routes = [
       },
       {
         path: "invoice",
-        component: InvoiceComponent
+        component: InvoiceComponent,
+        data: {isBl: false}
+      },
+      {
+        path: "bl",
+        component: InvoiceComponent,
+        data: {isBl: true}
       },
     ]
   }

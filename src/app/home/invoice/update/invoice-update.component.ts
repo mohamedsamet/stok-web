@@ -25,6 +25,7 @@ export class InvoiceUpdateComponent implements OnInit, OnChanges {
   @Input() show = false;
   @Input() savedInvoice = {} as InvoiceModel;
   @Input() readOnly = false;
+  @Input() isBl = false;
   @Output() refresh = new EventEmitter<any>();
   formGroup: FormGroup = new FormGroup<any>({});
   selectedClient: ClientModel = {} as ClientModel;
@@ -44,7 +45,7 @@ export class InvoiceUpdateComponent implements OnInit, OnChanges {
         search: ['']
       }),
       productInvoices: this.fb.array([]),
-      timbre: [1],
+      timbre: [this.isBl ? 0:1],
     });
     this.listenToClientSearch();
     this.listenToProductSearch();
@@ -91,14 +92,15 @@ export class InvoiceUpdateComponent implements OnInit, OnChanges {
   submit() {
     const invoiceForm = this.formGroup.value;
     invoiceForm.publicId = this.savedInvoice.publicId;
+    invoiceForm.isBl = this.isBl;
     this.invoiceService.createInvoice(invoiceForm)
       .pipe(
         tap((response: InvoiceModel) => {
           this.savedInvoice = response;
-          this.toastService.showSucess(`Facture: <${response.reference}> modifiée avec succées`);
+          this.toastService.showSucess(`${this.isBl ? 'Bon de livraison' : 'Facture'}: <${response.reference}> modifiée avec succées`);
         }),
         catchError(() => {
-          this.toastService.showFail('Problème survenu lors de la modification de la facture');
+          this.toastService.showFail('Problème survenu lors de la modification');
           return new Observable();
         })
       )

@@ -10,7 +10,7 @@ import {
   CLOSE,
   DRAFT,
   EXPORT,
-  INVOICE,
+  INVOICE, INVOICE_BL_SEARCH,
   INVOICE_SEARCH
 } from "../utils/url.constants";
 import {ClientModel, ClientRequest, ClientResponse, SearchClientModel} from "../home/client/client.model";
@@ -35,8 +35,8 @@ export class InvoiceService {
     return this.http.post<InvoiceModel>(`${HOST}${BASE_URL}${INVOICE}${CLOSE}/${publicId}`, {})
   }
 
-  findInvoices(search: SearchInvoiceModel): Observable<InvoiceResponse> {
-    return this.http.post<InvoiceResponse>(`${HOST}${BASE_URL}${INVOICE_SEARCH}`, search)
+  findInvoices(search: SearchInvoiceModel, isBl: boolean): Observable<InvoiceResponse> {
+    return this.http.post<InvoiceResponse>(`${HOST}${BASE_URL}${isBl ? INVOICE_BL_SEARCH : INVOICE_SEARCH}`, search)
   }
 
   downloadInvoice(publicId: string) {

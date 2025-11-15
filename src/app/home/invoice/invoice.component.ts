@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {RouterModule} from "@angular/router";
+import {ActivatedRoute, RouterModule} from "@angular/router";
 import {Observable, Subject, Subscription} from "rxjs";
 import {CommonModule} from "@angular/common";
 import {debounceTime, distinctUntilChanged, map, tap, window} from "rxjs/operators";
@@ -21,7 +21,7 @@ import {CloseComponent} from "../shared/close/close.component";
 })
 export class InvoiceComponent implements OnInit, OnDestroy {
 
-  constructor(private invoiceService: InvoiceService, private toast: ToastService) {}
+  constructor(private invoiceService: InvoiceService, private toast: ToastService, private routes: ActivatedRoute) {}
   search: string = "";
   showUpdate = false;
   searchSubject = new Subject<string>();
@@ -35,12 +35,15 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   invoiceToUpdate: InvoiceModel = {} as InvoiceModel;
   invoiceToExport: InvoiceModel = {} as InvoiceModel;
   blToToExport: InvoiceModel = {} as InvoiceModel;
+  public isBl = false;
   readOnly = false;
   @ViewChild(CloseComponent) closeComponent?: CloseComponent;
   @ViewChild(PaginationComponent) pagination?: PaginationComponent;
 
   ngOnInit(): void {
+    this.isBl = this.routes.snapshot.data['isBl'];
     this.listenToSearch();
+
   }
 
   ngOnDestroy(): void {
@@ -54,7 +57,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
       name: search,
       page: page
     } as SearchInvoiceModel;
-    return this.invoiceService.findInvoices(searchRequest).pipe(
+
+    return this.invoiceService.findInvoices(searchRequest, this.routes.snapshot.data['isBl']).pipe(
       tap((invoices: InvoiceResponse) => {
         this.invoiceCount = invoices.count;
         this.isLoading = false;

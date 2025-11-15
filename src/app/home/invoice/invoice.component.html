@@ -7,6 +7,7 @@
     <app-invoice-create
       [reference]="reference"
       [publicId]="publicId"
+      [isBl]="isBl"
       (createDraft)="createDraftInvoice()"
       (refresh)="refresh()"
       class="ms-auto">
@@ -17,6 +18,7 @@
       [show]="showUpdate"
       [savedInvoice]="invoiceToUpdate"
       [readOnly]="readOnly"
+      [isBl]="isBl"
       (refresh)="refresh()"
       class="ms-auto">
     </app-invoice-update>
@@ -44,10 +46,10 @@
 <!--          <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Fermer Facture/BL">-->
 <!--            <i *ngIf="!item.closed" (click)="closeComponent?.openCloseModal(item)" class="bi bi-database-check h4 me-2"></i>-->
 <!--          </span>-->
-          <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Générer une BL">
+          <span *ngIf="isBl" class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Générer une BL">
             <i (click)="blToToExport = item" class="bi bi-download h4 me-2" data-bs-toggle="modal" data-bs-target="#confirmBl"></i>
           </span>
-          <span class="d-inline-block" tabindex="0" data-toggle="tooltip"  title="Générer une Facture">
+          <span *ngIf="!isBl" class="d-inline-block" tabindex="0" data-toggle="tooltip"  title="Générer une Facture">
             <i (click)="invoiceToExport = item" class="bi bi-cloud-download h4" data-bs-toggle="modal" data-bs-target="#confirmInvoice"></i>
           </span>
         </td>

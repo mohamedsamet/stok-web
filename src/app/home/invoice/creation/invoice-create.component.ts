@@ -24,6 +24,7 @@ export class InvoiceCreateComponent implements OnInit {
   products: ProductModel[] = [];
   @Input() reference = "";
   @Input() publicId = "";
+  @Input() isBl = false;
   @Output() createDraft = new EventEmitter<any>();
   @Output() refresh = new EventEmitter<any>();
   savedInvoice: InvoiceModel = {} as InvoiceModel;
@@ -45,7 +46,7 @@ export class InvoiceCreateComponent implements OnInit {
         search: ['']
       }),
       productInvoices: this.fb.array([]),
-      timbre: [1],
+      timbre: [this.isBl ? 0 : 1],
     });
     this.listenToClientSearch();
     this.listenToProductSearch();
@@ -56,14 +57,15 @@ export class InvoiceCreateComponent implements OnInit {
   submit() {
     const invoiceForm = this.formGroup.value;
     invoiceForm.publicId = this.publicId;
+    invoiceForm.isBl = this.isBl;
     this.invoiceService.createInvoice(invoiceForm)
       .pipe(
         tap((response: InvoiceModel) => {
           this.savedInvoice = response;
-          this.toastService.showSucess(`Facture / Bl: <${response.reference}> créé avec succées`);
+          this.toastService.showSucess(`${this.isBl ? 'Bon de livraison' : 'Facture'}: <${response.reference}> créé avec succées`);
         }),
         catchError(() => {
-          this.toastService.showFail('Problème survenu lors de la création de la facture');
+          this.toastService.showFail('Problème survenu lors de la création');
           return new Observable();
         })
       )
