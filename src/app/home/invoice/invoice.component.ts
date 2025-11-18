@@ -2,8 +2,8 @@ import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, RouterModule} from "@angular/router";
 import {Observable, Subject, Subscription} from "rxjs";
 import {CommonModule} from "@angular/common";
-import {debounceTime, distinctUntilChanged, map, tap, window} from "rxjs/operators";
-import {FormsModule} from "@angular/forms";
+import {debounceTime, distinctUntilChanged, map, switchMap, tap, window} from "rxjs/operators";
+import {FormArray, FormBuilder, FormGroup, FormsModule, Validators} from "@angular/forms";
 import {ToastService} from "../../shared/toast/toast.service";
 import {PaginationComponent} from "../shared/pagination/pagination.component";
 import {PlaceholderComponent} from "../shared/placeholder/placeholder.component";
@@ -21,7 +21,10 @@ import {CloseComponent} from "../shared/close/close.component";
 })
 export class InvoiceComponent implements OnInit, OnDestroy {
 
-  constructor(private invoiceService: InvoiceService, private toast: ToastService, private routes: ActivatedRoute) {}
+  constructor(private invoiceService: InvoiceService,
+              private fb: FormBuilder,
+              private toast: ToastService,
+              private routes: ActivatedRoute) {}
   search: string = "";
   showUpdate = false;
   searchSubject = new Subject<string>();
@@ -32,13 +35,16 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   publicId = '';
   reference = '';
   createDraftSubscription = new Subscription();
+  createByBlSubscription = new Subscription();
   invoiceToUpdate: InvoiceModel = {} as InvoiceModel;
   invoiceToExport: InvoiceModel = {} as InvoiceModel;
   blToToExport: InvoiceModel = {} as InvoiceModel;
   public isBl = false;
+  blSelection = new Map<string, boolean>()
   readOnly = false;
   @ViewChild(CloseComponent) closeComponent?: CloseComponent;
   @ViewChild(PaginationComponent) pagination?: PaginationComponent;
+  atLeastOneSelection = false;
 
   ngOnInit(): void {
     this.isBl = this.routes.snapshot.data['isBl'];
@@ -49,6 +55,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.searchSubscription.unsubscribe();
     this.createDraftSubscription.unsubscribe();
+    this.createByBlSubscription.unsubscribe();
   }
 
   private findInvoices(search?: string, page: number = 0): Observable<InvoiceModel[]> {
@@ -154,4 +161,28 @@ export class InvoiceComponent implements OnInit, OnDestroy {
       }
     );
   }
+
+  get blSelectionFiltered() {
+    return [...this.blSelection].filter(([_, v]) => v).map(([key]) => key)
+  }
+
+  click(item: InvoiceModel, event : any) {
+    const ischecked = event['checked'];
+
+    this.blSelection.set(item.reference, ischecked);
+    this.atLeastOneSelection = Array.from(this.blSelection.values()).some(id => id);
+  }
+
+
+  createInvoiceFromBl() {
+    this.createByBlSubscription = this.invoiceService.createInvoiceByBls(this.blSelectionFiltered).pipe(
+      tap((invoiceModel) => {
+        this.publicId = invoiceModel?.publicId;
+        this.reference = invoiceModel?.reference;
+      })
+    ).subscribe(() => {
+      this.toast.showSucess('Facture: <' + this.reference + '> créé avec succées');
+    })
+  }
+
 }

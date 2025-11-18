@@ -4,7 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {HOST} from "../../environments/environment";
 import {
   BASE_URL,
-  BL,
+  BL, BY_BL,
   CLIENT,
   CLIENT_SEARCH,
   CLOSE,
@@ -53,4 +53,7 @@ export class InvoiceService {
     });
   }
 
+  createInvoiceByBls(blSelectionFiltered: string[]): Observable<InvoiceModel> {
+    return this.http.post<InvoiceModel>(`${HOST}${BASE_URL}${INVOICE}${BY_BL}`, blSelectionFiltered)
+  }
 }
