@@ -1,91 +1,32 @@
 <div class="notif-wrapper">
 
-  <!-- HEADER -->
-  <div class="notif-header">
-    <div class="header-left">
-      <div class="header-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round">
-          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-          <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-        </svg>
-      </div>
-      <div>
-        <div class="header-title">Notifications</div>
-        <div class="header-sub">
-          {{ notifications.length > 0 ? notifications.length + ' non lue' + (notifications.length > 1 ? 's' : '') :
-          'Aucune notification' }}
-        </div>
-      </div>
-    </div>
 
-    <div class="header-right">
-      <span class="badge" *ngIf="notifications.length">{{ notifications.length }}</span>
-      <button class="clear-btn" (click)="clearAll()" *ngIf="notifications.length">
-        Tout effacer
-      </button>
-    </div>
-  </div>
-
-  <!-- LISTE VIDE -->
-  <div class="empty" *ngIf="notifications.length === 0">
-    Aucune notification active
-  </div>
 
   <!-- NOTIFICATIONS -->
-  <div *ngFor="let n of notifications; let i = index" class="notif" [ngClass]="n.ton">
-
-    <!-- Icône gauche -->
-    <div class="notif-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-
-        <!-- positif : flèche montante -->
-        <ng-container *ngIf="n.ton === 'positif'">
-          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-          <polyline points="17 6 23 6 23 12" />
-        </ng-container>
-
-        <!-- negatif : flèche descendante -->
-        <ng-container *ngIf="n.ton === 'negatif'">
-          <polyline points="23 18 13.5 8.5 8.5 13.5 1 6" />
-          <polyline points="17 18 23 18 23 12" />
-        </ng-container>
-
-        <!-- neutre : info -->
-        <ng-container *ngIf="n.ton === 'neutre'">
-          <circle cx="12" cy="12" r="10" />
-          <line x1="12" y1="8" x2="12" y2="12" />
-          <line x1="12" y1="16" x2="12.01" y2="16" />
-        </ng-container>
-
-        <!-- warning : triangle -->
-        <ng-container *ngIf="n.ton === 'warning'">
-          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-          <line x1="12" y1="9" x2="12" y2="13" />
-          <line x1="12" y1="17" x2="12.01" y2="17" />
-        </ng-container>
-
-      </svg>
+<div *ngFor="let n of notifications; let i = index" class="notif" [ngClass]="n.urgence" (click)="openAlert(n)" style="cursor: pointer;">
+    <!-- Urgence + Catégorie en haut -->
+    <div class="notif-top">
+      <span class="urgence-badge" [ngClass]="n.urgence">
+        {{ n.urgence | uppercase }}
+      </span>
+      <span class="categorie">{{ n.categorie }}</span>
+      <button class="close-btn" (click)="close(i)">✕</button>
     </div>
 
-    <!-- Corps -->
-    <div class="notif-body">
-      <span class="notif-tag">{{ n.tag }}</span>
-      <div class="notif-title">{{ n.theme }}</div>
-      <div class="notif-msg">{{ n.proposition }}</div>
-      <div class="notif-time">{{ n.time }}</div>
-    </div>
+    <!-- Prediction au centre en gras -->
+    <div class="notif-prediction">{{ n.prediction }}</div>
 
-    <!-- Fermer -->
-    <button class="close-btn" (click)="close(i)">✕</button>
+    <!-- Thème en bas -->
+    <div class="notif-theme">{{ n.theme }}</div>
 
     <!-- Barre de progression -->
     <div class="progress-bar" [style.width.%]="n.progress"></div>
 
   </div>
-
-  <!-- BOUTON DÉMO -->
-  <button class="demo-btn" (click)="addRandom()">
-    + Simuler une notification
-  </button>
+  <div *ngFor="let n of notifications; let i = index" 
+     class="notif" 
+     [ngClass]="n.urgence"
+     (click)="openAlert(n)"
+     style="cursor: pointer;">
 
 </div>

@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
+import { MarketAlertWebSocketService } from '../../../service/market-alert-websocket.service';
 
-export interface Notification {
+export interface MarketNotification {
   id: number;
-  tag: string;
+  mongoId: string;
   theme: string;
-  proposition: string;
-  ton: 'positif' | 'negatif' | 'neutre' | 'warning';
-  time: string;
-  _timerId?: ReturnType<typeof setInterval>;
+  prediction: string;
+  urgence: string;
+  categorie: string;
   progress: number;
+  _timerId?: ReturnType<typeof setInterval>;
 }
 
 @Component({
@@ -19,84 +21,55 @@ export interface Notification {
   templateUrl: './notification-bar.component.html',
   styleUrls: ['./notification-bar.component.scss']
 })
-export class NotificationBarComponent implements OnInit {
+export class NotificationBarComponent implements OnInit, OnDestroy {
 
-  notifications: Notification[] = [];
+  notifications: MarketNotification[] = [];
   private idCounter = 0;
+  private subscription: Subscription = new Subscription();
 
-  private demos: Omit<Notification, 'id' | 'progress'>[] = [
-    {
-      ton: 'positif',
-      tag: 'Hausse',
-      theme: 'BMW AG — +4.2%',
-      proposition: 'Signal haussier détecté. Momentum favorable sur 5 jours.',
-      time: 'À l\'instant'
-    },
-    {
-      ton: 'negatif',
-      tag: 'Alerte',
-      theme: 'LVMH — Correction',
-      proposition: 'Franchissement du support à 680 €. Risque élevé à court terme.',
-      time: 'À l\'instant'
-    },
-    {
-      ton: 'neutre',
-      tag: 'Info',
-      theme: 'Portefeuille mis à jour',
-      proposition: 'Rééquilibrage automatique effectué. 12 lignes ajustées.',
-      time: 'À l\'instant'
-    },
-    {
-      ton: 'warning',
-      tag: 'warning',
-      theme: 'Volatilité détectée',
-      proposition: 'VIX > 25. Exposition aux actifs risqués recommandée à la baisse.',
-      time: 'À l\'instant'
-    },
-    {
-      ton: 'positif',
-      tag: 'Dividende',
-      theme: 'Total Energies — Coupon',
-      proposition: 'Versement de 0.79 € par action confirmé pour le 26 avril.',
-      time: 'À l\'instant'
-    },
-    {
-      ton: 'negatif',
-      tag: 'Stop-loss',
-      theme: 'Airbus — Seuil atteint',
-      proposition: 'Ordre stop déclenché à 148.20 €. Position clôturée.',
-      time: 'À l\'instant'
-    }
-  ];
+  constructor(private wsService: MarketAlertWebSocketService) {}
 
   ngOnInit(): void {
-    // Ajouter 3 notifications de démo au démarrage
-    this.demos.slice(0, 3).forEach((demo, i) => {
-      setTimeout(() => this.push(demo), i * 400);
+  this.subscription = this.wsService.alerts$.subscribe((alert: any) => {
+    if (!alert.prediction || alert.prediction.trim() === '') return;
+    this.push({
+      mongoId: alert._id || alert.id || '',
+      theme: alert.theme || '',
+      prediction: alert.prediction || '',
+      urgence: alert.urgence || 'faible',
+      categorie: alert.categorie || 'autre'
     });
+  });
+}
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
-  /**
-   * Ajoute une notification avec auto-suppression après 6 secondes
-   */
-  push(data: Omit<Notification, 'id' | 'progress'>): void {
-    const notif: Notification = {
+  push(data: Omit<MarketNotification, 'id' | 'progress'>): void {
+    const notif: MarketNotification = {
       ...data,
       id: ++this.idCounter,
-      progress: 100,
-      time: 'À l\'instant'
+      progress: 100
     };
 
     this.notifications.unshift(notif);
 
-    // Barre de progression décroissante sur 6 secondes
-    const step = 100 / 60; // 60 ticks × 100ms = 6 000ms
+    const step = 100 / 300;
     notif._timerId = setInterval(() => {
       notif.progress -= step;
       if (notif.progress <= 0) {
         this.removeById(notif.id);
       }
     }, 100);
+
+    if (this.notifications.length > 6) {
+      this.close(this.notifications.length - 1);
+    }
+  }
+
+  openAlert(n: MarketNotification): void {
+    window.open(`http://localhost:5173/analyses?id=${n.mongoId}`, '_blank');
   }
 
   close(index: number): void {
@@ -108,14 +81,6 @@ export class NotificationBarComponent implements OnInit {
   clearAll(): void {
     this.notifications.forEach(n => { if (n._timerId) clearInterval(n._timerId); });
     this.notifications = [];
-  }
-
-  addRandom(): void {
-    const demo = this.demos[Math.floor(Math.random() * this.demos.length)];
-    this.push(demo);
-    if (this.notifications.length > 6) {
-      this.close(this.notifications.length - 1);
-    }
   }
 
   private removeById(id: number): void {
