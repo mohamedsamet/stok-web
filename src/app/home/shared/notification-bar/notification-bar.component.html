@@ -1,0 +1,32 @@
+<div class="notif-wrapper">
+
+
+
+  <!-- NOTIFICATIONS -->
+<div *ngFor="let n of notifications; let i = index" class="notif" [ngClass]="n.urgence" (click)="openAlert(n)" style="cursor: pointer;">
+    <!-- Urgence + Catégorie en haut -->
+    <div class="notif-top">
+      <span class="urgence-badge" [ngClass]="n.urgence">
+        {{ n.urgence | uppercase }}
+      </span>
+      <span class="categorie">{{ n.categorie }}</span>
+      <button class="close-btn" (click)="close(i)">✕</button>
+    </div>
+
+    <!-- Prediction au centre en gras -->
+    <div class="notif-prediction">{{ n.prediction }}</div>
+
+    <!-- Thème en bas -->
+    <div class="notif-theme">{{ n.theme }}</div>
+
+    <!-- Barre de progression -->
+    <div class="progress-bar" [style.width.%]="n.progress"></div>
+
+  </div>
+  <div *ngFor="let n of notifications; let i = index" 
+     class="notif" 
+     [ngClass]="n.urgence"
+     (click)="openAlert(n)"
+     style="cursor: pointer;">
+
+</div>
