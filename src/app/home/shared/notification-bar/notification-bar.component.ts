@@ -30,17 +30,24 @@ export class NotificationBarComponent implements OnInit, OnDestroy {
   constructor(private wsService: MarketAlertWebSocketService) {}
 
   ngOnInit(): void {
-  this.subscription = this.wsService.alerts$.subscribe((alert: any) => {
-    if (!alert.prediction || alert.prediction.trim() === '') return;
-    this.push({
-      mongoId: alert._id || alert.id || '',
-      theme: alert.theme || '',
-      prediction: alert.prediction || '',
-      urgence: alert.urgence || 'faible',
-      categorie: alert.categorie || 'autre'
+    this.subscription = this.wsService.alerts$.subscribe((alert: any) => {
+
+      console.log('[NOTIF REÇUE]', alert);
+
+      if (!alert.prediction || alert.prediction.trim() === '') return;
+      if (!alert.theme || alert.theme.trim() === '') return;
+      if (!alert._id && !alert.id) return;
+      if (!alert.source_id) return; 
+
+      this.push({
+        mongoId: alert._id || alert.id || '',
+        theme: alert.theme || '',
+        prediction: alert.prediction || '',
+        urgence: alert.urgence || 'faible',
+        categorie: alert.categorie || 'autre'
+      });
     });
-  });
-}
+  }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -55,7 +62,7 @@ export class NotificationBarComponent implements OnInit, OnDestroy {
 
     this.notifications.unshift(notif);
 
-    const step = 100 / 300;
+    const step = 100 / 3000;
     notif._timerId = setInterval(() => {
       notif.progress -= step;
       if (notif.progress <= 0) {
@@ -69,8 +76,7 @@ export class NotificationBarComponent implements OnInit, OnDestroy {
   }
 
   openAlert(n: MarketNotification): void {
-    window.open(`http://localhost:5173/analyses?id=${n.mongoId}`, '_blank');
-  }
+window.open(`http://localhost:5173/analyses?id=${n.mongoId}`, 'market-feedback');  }
 
   close(index: number): void {
     const notif = this.notifications[index];
