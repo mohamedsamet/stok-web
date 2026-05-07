@@ -1,7 +1,12 @@
-import {Component, OnInit} from "@angular/core";
-import {CommonModule} from "@angular/common";
-import {ToastService} from "./toast.service";
-import {delay, tap} from "rxjs/operators";
+import { Component, OnInit } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { ToastService, Status, ToastPayload } from "./toast.service";
+import { MarketNotification } from "../models/market-notification.model";
+interface ActiveToast extends ToastPayload {
+  id: number;
+  progress: number;
+  _timerId?: ReturnType<typeof setInterval>;
+}
 
 @Component({
   selector: 'app-toast',
@@ -11,58 +16,48 @@ import {delay, tap} from "rxjs/operators";
   styleUrls: ['./toast.component.scss']
 })
 export class ToastComponent implements OnInit {
+  toasts: ActiveToast[] = [];
+  private idCounter = 0;
+  statusEnum = Status;
 
   constructor(private toastService: ToastService) {}
 
-  show: boolean = false;
-  message: string = "";
-  status: Status = Status.SUCCESS;
-
-  statusEnum = Status;
-
   ngOnInit(): void {
-    this.listenToSuccess();
-    this.listenToFail();
+    this.toastService.getToast().subscribe((payload: ToastPayload) => {
+      this.push(payload);
+    });
   }
 
+  push(payload: ToastPayload): void {
+    const toast: ActiveToast = { ...payload, id: ++this.idCounter, progress: 100 };
+    this.toasts.unshift(toast);
 
-  private listenToSuccess() {
-    this.toastService.getToastSucess()
-      .pipe(
-        tap((message: string) => {
-          this.show = true;
-          this.message = message;
-          this.status = Status.SUCCESS;
-        }),
-        delay(6000),
-        tap(() => {
-          this.show = false;
-        })
-      )
-      .subscribe();
+    const duration = 6000;
+    const step = 100 / (duration / 100);
+    toast._timerId = setInterval(() => {
+      toast.progress -= step;
+      if (toast.progress <= 0) this.removeById(toast.id);
+    }, 100);
+
+    if (this.toasts.length > 5) this.close(this.toasts.length - 1);
   }
 
-  private listenToFail() {
-    this.toastService.getToastFail()
-      .pipe(
-        tap((message: string) => {
-          this.show = true;
-          this.message = message;
-          this.status = Status.FAIL;
-        }),
-        delay(6000),
-        tap(() => {
-          this.show = false;
-        })
-      )
-      .subscribe();
+  close(index: number): void {
+    const toast = this.toasts[index];
+    if (toast?._timerId) clearInterval(toast._timerId);
+    this.toasts.splice(index, 1);
   }
 
-  close() {
-    this.show = false;
+  removeById(id: number): void {
+    const index = this.toasts.findIndex(t => t.id === id);
+    if (index > -1) this.close(index);
   }
-}
 
-export enum Status {
-  SUCCESS='success', FAIL='fail'
+  openAlert(alert: MarketNotification): void {
+    window.open(`http://localhost:5173/analyses?id=${alert.mongoId}`, 'market-feedback');
+  }
+
+  urgenceColor(urgence: string): string {
+    return { haute: '#dc2626', élevée: '#dc2626', moyenne: '#d97706', faible: '#16a34a' }[urgence] ?? '#71717a';
+  }
 }

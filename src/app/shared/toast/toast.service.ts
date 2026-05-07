@@ -1,26 +1,36 @@
-import {Injectable} from "@angular/core";
-import {Subject} from "rxjs";
+import { Injectable } from "@angular/core";
+import { Subject } from "rxjs";
+import { MarketNotification } from "../models/market-notification.model";
 
-@Injectable({
-  providedIn: 'root'
-})
+export interface ToastPayload {
+  message: string;
+  status: Status;
+  marketAlert?: MarketNotification;
+}
+
+@Injectable({ providedIn: 'root' })
 export class ToastService {
-  private toastSucess$ = new Subject<string>();
-  private toastFail$ = new Subject<string>();
+  private toast$ = new Subject<ToastPayload>();
 
-  getToastSucess() {
-    return this.toastSucess$.asObservable();
-  }
-
-  getToastFail() {
-    return this.toastFail$.asObservable();
+  getToast() {
+    return this.toast$.asObservable();
   }
 
   showSucess(message: string) {
-    this.toastSucess$.next(message);
+    this.toast$.next({ message, status: Status.SUCCESS });
   }
 
   showFail(message: string) {
-    this.toastFail$.next(message);
+    this.toast$.next({ message, status: Status.FAIL });
   }
+
+  showAlert(alert: MarketNotification) {
+    this.toast$.next({ message: alert.prediction, status: Status.ALERT, marketAlert: alert });
+  }
+}
+
+export enum Status {
+  SUCCESS = 'success',
+  FAIL = 'fail',
+  ALERT = 'alert'
 }
