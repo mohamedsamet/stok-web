@@ -20,26 +20,28 @@ export class NotificationBarComponent implements OnInit, OnDestroy {
     private toastService: ToastService
   ) {}
 
-  ngOnInit(): void {
-    this.sub = this.wsService.alerts$.subscribe((alert: any) => {
-      console.log('[ALERTE REÇUE]', alert);
-      if (!alert.prediction?.trim() || !alert.theme?.trim()) return;
-      if (!alert._id && !alert.id) return;
-      if (!alert.source_id) return;
+ ngOnInit(): void {
+  this.sub = this.wsService.alerts$.subscribe((alert: any) => {
+    console.log('[ALERTE REÇUE]', alert);
 
+    if (!alert._id && !alert.id) return;
+    if (!alert.themes?.length) return;
+
+    alert.themes.forEach((theme: any) => {
       const notif: MarketNotification = {
         id: ++this.idCounter,
         mongoId: alert._id || alert.id || '',
-        theme: alert.theme || '',
-        prediction: alert.prediction || '',
-        urgence: alert.urgence || 'faible',
-        categorie: alert.categorie || 'autre',
+        theme: theme.theme || '',
+        prediction: theme.prediction || '',
+        urgence: theme.propositions?.urgence || 'faible',
+        categorie: theme.propositions?.categorie || 'autre',
         progress: 100
       };
 
       this.toastService.showAlert(notif);
     });
-  }
+  });
+}
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();

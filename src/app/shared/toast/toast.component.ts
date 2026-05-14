@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { ToastService, Status, ToastPayload } from "./toast.service";
 import { MarketNotification } from "../models/market-notification.model";
+
 interface ActiveToast extends ToastPayload {
   id: number;
   progress: number;
@@ -16,7 +17,8 @@ interface ActiveToast extends ToastPayload {
   styleUrls: ['./toast.component.scss']
 })
 export class ToastComponent implements OnInit {
-  toasts: ActiveToast[] = [];
+  toasts: ActiveToast[] = [];       // toasts normaux → haut droite
+  alerts: ActiveToast[] = [];       // alertes Kafka  → bas droite
   private idCounter = 0;
   statusEnum = Status;
 
@@ -24,34 +26,52 @@ export class ToastComponent implements OnInit {
 
   ngOnInit(): void {
     this.toastService.getToast().subscribe((payload: ToastPayload) => {
-      this.push(payload);
+      // Si le payload vient de Kafka, il aura `alert` défini
+      if (payload.status === Status.ALERT) {
+  this.pushAlert(payload);
+} else {
+  this.push(payload);
+}
     });
   }
 
+  // --- Toasts normaux (haut droite) ---
   push(payload: ToastPayload): void {
     const toast: ActiveToast = { ...payload, id: ++this.idCounter, progress: 100 };
     this.toasts.unshift(toast);
+    this.startTimer(toast, this.toasts);
+    if (this.toasts.length > 5) this.close(this.toasts.length - 1, this.toasts);
+  }
 
+  // --- Alertes Kafka (bas droite) ---
+  pushAlert(payload: ToastPayload): void {
+    const toast: ActiveToast = { ...payload, id: ++this.idCounter, progress: 100 };
+    this.alerts.unshift(toast);
+    this.startTimer(toast, this.alerts);
+    if (this.alerts.length > 5) this.close(this.alerts.length - 1, this.alerts);
+  }
+
+  private startTimer(toast: ActiveToast, list: ActiveToast[]): void {
     const duration = 6000;
     const step = 100 / (duration / 100);
     toast._timerId = setInterval(() => {
       toast.progress -= step;
-      if (toast.progress <= 0) this.removeById(toast.id);
+      if (toast.progress <= 0) this.removeById(toast.id, list);
     }, 100);
-
-    if (this.toasts.length > 5) this.close(this.toasts.length - 1);
   }
 
-  close(index: number): void {
-    const toast = this.toasts[index];
+  close(index: number, list: ActiveToast[]): void {
+    const toast = list[index];
     if (toast?._timerId) clearInterval(toast._timerId);
-    this.toasts.splice(index, 1);
+    list.splice(index, 1);
   }
 
-  removeById(id: number): void {
-    const index = this.toasts.findIndex(t => t.id === id);
-    if (index > -1) this.close(index);
-  }
+  removeById(id: number, list?: ActiveToast[]): void {
+  const target = list ?? [...this.toasts, ...this.alerts]; // fallback si appelé sans liste
+  const arr = list ?? (this.toasts.find(t => t.id === id) ? this.toasts : this.alerts);
+  const index = arr.findIndex(t => t.id === id);
+  if (index > -1) this.close(index, arr);
+}
 
   openAlert(alert: MarketNotification): void {
     window.open(`http://localhost:5173/analyses?id=${alert.mongoId}`, 'market-feedback');

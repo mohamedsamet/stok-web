@@ -17,7 +17,11 @@ export class AppComponent implements OnInit {
   constructor(private loginService: LoginService) {
   }
 
+ 
   ngOnInit(): void {
-    this.loginService.checkToken()
-  }
+  this.loginService.checkToken();
+  document.addEventListener('hide.bs.modal', () => {
+    (document.activeElement as HTMLElement)?.blur();
+  });
+}
 }
