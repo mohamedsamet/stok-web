@@ -1,12 +1,56 @@
+<!-- Toasts normaux → haut droite -->
 <div class="toast-container position-fixed top-0 end-0 p-3">
-  <div id="liveToast" class="toast" [class.show]="show" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header" [ngClass]="status">
-      <strong *ngIf="status === statusEnum.SUCCESS" class="me-auto">Opération effectuée</strong>
-      <strong *ngIf="status === statusEnum.FAIL" class="me-auto">Erreur d'opération</strong>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" (click)="close()"></button>
+  <div
+    *ngFor="let t of toasts; let i = index"
+    class="toast show"
+    role="alert"
+  >
+    <div class="toast-header" [ngClass]="t.status">
+      <span class="toast-icon me-2" [ngClass]="t.status">
+        <span *ngIf="t.status === statusEnum.SUCCESS">✓</span>
+        <span *ngIf="t.status === statusEnum.FAIL">✕</span>
+      </span>
+
+      <strong class="me-auto">
+        <ng-container *ngIf="t.status === statusEnum.SUCCESS">Opération effectuée</ng-container>
+        <ng-container *ngIf="t.status === statusEnum.FAIL">Erreur d'opération</ng-container>
+      </strong>
+
+      <button class="btn-close" (click)="removeById(t.id, toasts)"></button>
     </div>
-    <div class="toast-body">
-      {{message}}
+
+    <div class="toast-body">{{ t.message }}</div>
+
+    <div class="progress-bar" [style.width.%]="t.progress" [ngClass]="t.status"></div>
+  </div>
+</div>
+
+<!-- Alertes Kafka → bas droite -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div
+    *ngFor="let t of alerts; let i = index"
+    class="toast show"
+    role="alert"
+    (click)="t.marketAlert ? openAlert(t.marketAlert) : null"
+    [style.cursor]="t.marketAlert ? 'pointer' : 'default'"
+  >
+    <div class="toast-header" [ngClass]="t.marketAlert?.urgence">
+      <span class="toast-icon me-2" [ngClass]="t.marketAlert?.urgence">
+        <span>⚡</span>
+      </span>
+
+      <strong class="me-auto">
+        <span class="urgence-badge" [ngClass]="t.marketAlert?.urgence">{{ t.marketAlert?.urgence | uppercase }}</span>
+        <span class="categorie ms-1">{{ t.marketAlert?.categorie }}</span>
+      </strong>
+
+      <button class="btn-close" (click)="$event.stopPropagation(); removeById(t.id, alerts)"></button>
     </div>
+
+    <div class="toast-body">{{ t.message }}</div>
+
+    <div *ngIf="t.marketAlert" class="toast-theme px-3 pb-2">{{ t.marketAlert.theme }}</div>
+
+    <div class="progress-bar" [style.width.%]="t.progress" [ngClass]="t.marketAlert?.urgence"></div>
   </div>
 </div>
